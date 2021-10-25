@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Dates } from './dates-per-specific-date';
+import { YearMonth } from './dates-per-year-month';
+import { Salary } from './salary';
+import { Info } from './salary-information';
 
 @Component({
   selector: 'app-tax',
@@ -7,18 +11,12 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./tax.component.css']
 })
 export class TaxComponent implements OnInit {
-
   clientForm: any;
-  
-  listYear: any[] = [
-    {'year': '2021/2022'}, {'year': '2020/2021'}, {'year': '2019/2020'}, {'year': '2018/2019'},
-    {'year': '2017/2018'}, {'year': '2016/2017'},{'year': '2015/2016'},{'year': '2014/2015'},
-    {'year': '2013/2014'}, {'year': '2012/2013'}, {'year': '2011/2012'},{'year': '2010/2011'}
-  ];
-  listMonth: string [] = []
-  daylist: number[] = [];
-  months: string[] = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
-  years: number[] = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+  salary: Salary;
+  dates1: YearMonth;
+  dates2: Dates;
+  info : Info;
+  details: any []= [];
 
   addYear(): FormGroup{
     return this.fb.group({
@@ -56,10 +54,16 @@ export class TaxComponent implements OnInit {
     this.addedDate.push(this.addDate()); 
   }
   save(): void{
-    
+    //code to manage the data captured from salary record
   }
 
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder) {
+    this.salary = new Salary();
+    this.info = new Info();
+    this.dates1 = new YearMonth();
+    this.dates2 = new Dates()
+
+   }
 
   ngOnInit(): void {
     this.clientForm = this.fb.group({
@@ -71,20 +75,24 @@ export class TaxComponent implements OnInit {
       selectMonth: this.fb.array([this.addMonth()]),
       selectDate: this.fb.array([this.addDate()]),
     });
-    
-    let i: number = 0;
-    let x: number = 0;
+    this.salary.displayFormInputData();
 
-    for (i=0; i<this.years.length; i++){
-      for(x=0; x<this.months.length; x++){
-        this.listMonth.push(this.months[x]+ "-"+ this.years[i]);
+    //to test or display the fake data created for each class
+    this.details = [
+      {
+        CompanyName: this.info.companyName,
+        Amount: this.info.amount,
+        Currency: this.info.currency,
+        Year: this.dates1.selectYear,
+        Month: this.dates1.selectMonth,
+        Date: {
+          day: this.dates2.day,
+          month: this.dates2.month,
+          year: this.dates2.year
+        }
+        
       }
-    }
-    this.listMonth.reverse(); 
-    let y: number = 1;
-    for (y; y<32; y++){
-      this.daylist.push(y);
-    }
-  }
+    ];
 
+  }
 }

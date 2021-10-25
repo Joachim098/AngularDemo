@@ -40,11 +40,8 @@
                     formControlName="currency" 
                     [ngClass]="{'is-invalid': (clientForm.get('currency').touched || clientForm.get('currency').dirty) && !clientForm.get('currency').valid}"
                     >
-                    <option>ZAR</option>
-                    <option>USD</option>
-                    <option>EUR</option>
-                    <option>CAD</option>
-                    <option>DKK</option>
+                    <option></option>
+                    <option *ngFor="let c of salary.currency"> {{ c }} </option>
                     </select>
                 </div>
             </div>
@@ -74,7 +71,7 @@
                                 formControlName="selectYear"
                                 >
                                 <option></option>
-                                <option *ngFor="let x of listYear"> Total for {{ x.year }} Tax Year </option>
+                                <option *ngFor="let x of salary.listYear"> Total for {{ x.year }} Tax Year </option>
                                 </select>
                             </div>
                         </div>
@@ -97,7 +94,7 @@
                                 formControlName="selectMonth"
                                 >
                                 <option></option>
-                                <option *ngFor="let x of listMonth"> Total for {{ x }} </option>
+                                <option *ngFor="let x of salary.listMonth"> Total for {{ x }} </option>
                                 </select>
                             </div>
                         </div>
@@ -121,7 +118,7 @@
                                     formControlName="day"
                                     >
                                     <option></option>
-                                    <option *ngFor="let x of daylist"> {{ x }} </option>
+                                    <option *ngFor="let x of salary.daylist"> {{ x }} </option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -130,7 +127,7 @@
                                     formControlName="month"
                                     >
                                     <option></option>
-                                    <option *ngFor="let x of months"> {{ x }} </option>
+                                    <option *ngFor="let x of salary.months"> {{ x }} </option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -139,7 +136,7 @@
                                     formControlName="year"
                                     >
                                     <option></option>
-                                    <option *ngFor="let x of years"> 20{{ x }} </option>
+                                    <option *ngFor="let x of salary.years"> 20{{ x }} </option>
                                     </select>
                                 </div>
                             </div>
@@ -155,5 +152,9 @@
             <button class="btn btn-primary"> SUBMIT </button>
             </form>
         </div>
+    </div>
+    <br/>
+    <div *ngFor="let detail of details">
+        <p>{{ detail | json}}</p>
     </div>
 </div>
