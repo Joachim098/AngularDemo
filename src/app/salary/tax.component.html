@@ -1,0 +1,159 @@
+<div class="container w-50 mt-5">
+    <div class="card">
+        <div class="card-header">
+            SALARY RECORD
+        </div>
+        <div class="card-body mt-2">
+            <form 
+            novalidate
+            (ngSubmit)="save()" 
+            [formGroup]="clientForm"
+            >
+            <div class="row">
+                <div class="col">
+                    <p class="h6">COMPANY</p>
+                    <input 
+                    class="form-control form-control-lg" 
+                    type="text" 
+                    placeholder="Enter Company Name"
+                    formControlName="company"
+                    [ngClass]="{'is-invalid': (clientForm.get('company').touched || clientForm.get('company').dirty) && !clientForm.get('company').valid}"
+                    >
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col">
+                    <p class="h6">AMOUNT</p>
+                    <input 
+                    class="form-control form-control-lg" 
+                    type="text" 
+                    placeholder="Enter salary Amount"
+                    formControlName="amount"
+                    [ngClass]="{'is-invalid': (clientForm.get('amount').touched || clientForm.get('amount').dirty) && !clientForm.get('amount').valid}"
+                    >
+                </div>
+                <div class="col">
+                    <p class="h6">CURRENCY</p>
+                    <select 
+                    class="form-select form-select-lg" 
+                    formControlName="currency" 
+                    [ngClass]="{'is-invalid': (clientForm.get('currency').touched || clientForm.get('currency').dirty) && !clientForm.get('currency').valid}"
+                    >
+                    <option>ZAR</option>
+                    <option>USD</option>
+                    <option>EUR</option>
+                    <option>CAD</option>
+                    <option>DKK</option>
+                    </select>
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col">
+                    <p class="h6">DATE PAID</p>
+                    <select 
+                    class="form-select form-select-lg" 
+                    formControlName="selectOption" 
+                    >
+                    <option> Enter for full Tax Year </option>
+                    <option> Enter per Month </option>
+                    <option> Enter per Specific Date</option>
+                    </select>
+                </div>
+            </div>
+            <br/>
+            <div class="row mt-2" *ngIf="clientForm.get('selectOption').value.includes('Year')">
+                <div class="col">
+                    <div formArrayName="selectYear" *ngFor="let year of addedYears.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <p class="h6">SELECT YEAR</p>
+                            <div class="col">
+                                <select 
+                                class="form-select form-select-lg" 
+                                formControlName="selectYear"
+                                >
+                                <option></option>
+                                <option *ngFor="let x of listYear"> Total for {{ x.year }} Tax Year </option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+                <div class="col" style="margin-top: 0.8cm;">
+                    <button [disabled]="!addedYears.valid" class="btn btn-primary" (click)="duplicateFields1()">Select another Year</button>
+                </div>
+            </div>
+            <br/>
+            <div class="row month" *ngIf="clientForm.get('selectOption').value.includes('Month')">
+                <div class="col">
+                    <div formArrayName="selectMonth" *ngFor="let m of addedMonths.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <p class="h6">SELECT MONTH</p>
+                            <div class="col">
+                                <select 
+                                class="form-select form-select-lg" 
+                                formControlName="selectMonth"
+                                >
+                                <option></option>
+                                <option *ngFor="let x of listMonth"> Total for {{ x }} </option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+                <div class="col" style="margin-top: 0.8cm;">
+                    <button class="btn btn-primary" (click)="duplicateFields2()">Select another Month</button>
+                </div>
+            </div>
+            <br/>
+            <div class="row date" *ngIf="clientForm.get('selectOption').value.includes('Date')">
+                <div class="col">
+                    <div formArrayName="selectDate" *ngFor="let d of addedDate.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <p class="h6">SELECT DATE</p>
+                            <div class="row">
+                                <div class="col">
+                                    <select 
+                                    class="form-select form-select-lg" 
+                                    formControlName="day"
+                                    >
+                                    <option></option>
+                                    <option *ngFor="let x of daylist"> {{ x }} </option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <select 
+                                    class="form-select form-select-lg" 
+                                    formControlName="month"
+                                    >
+                                    <option></option>
+                                    <option *ngFor="let x of months"> {{ x }} </option>
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <select 
+                                    class="form-select form-select-lg" 
+                                    formControlName="year"
+                                    >
+                                    <option></option>
+                                    <option *ngFor="let x of years"> 20{{ x }} </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+                <div class="col" style="margin-top: 0.8cm;">
+                    <button class="btn btn-primary" (click)="duplicateFields3()">Add another Date</button>
+                </div>
+            </div>
+            <br/>
+            <button class="btn btn-primary"> SUBMIT </button>
+            </form>
+        </div>
+    </div>
+</div>
