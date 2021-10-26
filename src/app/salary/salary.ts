@@ -1,12 +1,8 @@
-
-export class Salary{
-     company: string = '';
-     amount: number = 0;
+export class FormData{
      currency: string[] = ['ZAR', 'USD', 'EUR', 'CAD', 'DKK'];
-     listYear: any[] = [
-        {'year': '2021/2022'}, {'year': '2020/2021'}, {'year': '2019/2020'}, {'year': '2018/2019'},
-        {'year': '2017/2018'}, {'year': '2016/2017'},{'year': '2015/2016'},{'year': '2014/2015'},
-        {'year': '2013/2014'}, {'year': '2012/2013'}, {'year': '2011/2012'},{'year': '2010/2011'}
+     listYear: string[] = [
+       '2021/2022','2020/2021','2019/2020','2018/2019','2017/2018','2016/2017',
+       '2015/2016','2014/2015','2013/2014','2012/2013','2011/2012','2010/2011'
       ];
       listMonth: string [] = []
       daylist: number[] = [];
@@ -27,5 +23,4 @@ export class Salary{
             this.daylist.push(y);
         }
     }
-         
 }

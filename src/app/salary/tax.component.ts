@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Dates } from './dates-per-specific-date';
-import { YearMonth } from './dates-per-year-month';
-import { Salary } from './salary';
+import { FormData } from './salary';
 import { Info } from './salary-information';
 
 @Component({
@@ -11,12 +9,9 @@ import { Info } from './salary-information';
   styleUrls: ['./tax.component.css']
 })
 export class TaxComponent implements OnInit {
-  clientForm: any;
-  salary: Salary;
-  dates1: YearMonth;
-  dates2: Dates;
+  clientForm: FormGroup;
+  formData: FormData;
   info : Info;
-  details: any []= [];
 
   addYear(): FormGroup{
     return this.fb.group({
@@ -58,11 +53,8 @@ export class TaxComponent implements OnInit {
   }
 
   constructor(private fb: FormBuilder) {
-    this.salary = new Salary();
+    this.formData = new FormData();
     this.info = new Info();
-    this.dates1 = new YearMonth();
-    this.dates2 = new Dates()
-
    }
 
   ngOnInit(): void {
@@ -75,24 +67,6 @@ export class TaxComponent implements OnInit {
       selectMonth: this.fb.array([this.addMonth()]),
       selectDate: this.fb.array([this.addDate()]),
     });
-    this.salary.displayFormInputData();
-
-    //to test or display the fake data created for each class
-    this.details = [
-      {
-        CompanyName: this.info.companyName,
-        Amount: this.info.amount,
-        Currency: this.info.currency,
-        Year: this.dates1.selectYear,
-        Month: this.dates1.selectMonth,
-        Date: {
-          day: this.dates2.day,
-          month: this.dates2.month,
-          year: this.dates2.year
-        }
-        
-      }
-    ];
-
+    this.formData.displayFormInputData();
   }
 }
