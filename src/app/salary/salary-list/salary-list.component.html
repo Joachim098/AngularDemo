@@ -1,0 +1,35 @@
+<div class="container w-50 mt-5">
+    <div class="card">
+        <div class="card-header">
+            SALARY LIST
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let d of data.getTestData(123)">
+                    <div class="row">
+                        <div class="col">
+                            User Id: 
+                        </div>
+                        <div class="col">
+                            {{d.userId}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            Tax Period Date: 
+                        </div>
+                        <div class="col" *ngIf="d.exactPeriod.includes('Year')">
+                           {{d.taxYear!.year}}
+                        </div>
+                        <div class="col" *ngIf="d.exactPeriod.includes('Month')">
+                            {{d.taxMonth!.month}}
+                         </div>
+                         <div class="col" *ngIf="d.exactPeriod.includes('Date')">
+                            {{d.taxDate!.day+'-'+d.taxDate!.month+'-'+d.taxDate!.year}}
+                         </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
