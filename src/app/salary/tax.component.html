@@ -17,7 +17,7 @@
                     type="text" 
                     placeholder="Enter Company Name"
                     formControlName="company"
-                    [ngClass]="{'is-invalid': (clientForm.get('company').touched || clientForm.get('company').dirty) && !clientForm.get('company').valid}"
+                    [ngClass]="{'is-invalid': (clientForm.get('company')!.touched || clientForm.get('company')!.dirty) && !clientForm.get('company')!.valid}"
                     >
                 </div>
             </div>
@@ -30,7 +30,7 @@
                     type="text" 
                     placeholder="Enter salary Amount"
                     formControlName="amount"
-                    [ngClass]="{'is-invalid': (clientForm.get('amount').touched || clientForm.get('amount').dirty) && !clientForm.get('amount').valid}"
+                    [ngClass]="{'is-invalid': (clientForm.get('amount')!.touched || clientForm.get('amount')!.dirty) && !clientForm.get('amount')!.valid}"
                     >
                 </div>
                 <div class="col">
@@ -38,13 +38,10 @@
                     <select 
                     class="form-select form-select-lg" 
                     formControlName="currency" 
-                    [ngClass]="{'is-invalid': (clientForm.get('currency').touched || clientForm.get('currency').dirty) && !clientForm.get('currency').valid}"
+                    [ngClass]="{'is-invalid': (clientForm.get('currency')!.touched || clientForm.get('currency')!.dirty) && !clientForm.get('currency')!.valid}"
                     >
-                    <option>ZAR</option>
-                    <option>USD</option>
-                    <option>EUR</option>
-                    <option>CAD</option>
-                    <option>DKK</option>
+                    <option></option>
+                    <option *ngFor="let c of formData.currency"> {{ c }} </option>
                     </select>
                 </div>
             </div>
@@ -63,7 +60,7 @@
                 </div>
             </div>
             <br/>
-            <div class="row mt-2" *ngIf="clientForm.get('selectOption').value.includes('Year')">
+            <div class="row mt-2" *ngIf="clientForm.get('selectOption')!.value.includes('Year')">
                 <div class="col">
                     <div formArrayName="selectYear" *ngFor="let year of addedYears.controls; let i=index">
                         <div [formGroupName]="i">
@@ -74,7 +71,7 @@
                                 formControlName="selectYear"
                                 >
                                 <option></option>
-                                <option *ngFor="let x of listYear"> Total for {{ x.year }} Tax Year </option>
+                                <option *ngFor="let x of formData.listYear"> Total for {{ x }} Tax Year </option>
                                 </select>
                             </div>
                         </div>
@@ -86,7 +83,7 @@
                 </div>
             </div>
             <br/>
-            <div class="row month" *ngIf="clientForm.get('selectOption').value.includes('Month')">
+            <div class="row month" *ngIf="clientForm.get('selectOption')!.value.includes('Month')">
                 <div class="col">
                     <div formArrayName="selectMonth" *ngFor="let m of addedMonths.controls; let i=index">
                         <div [formGroupName]="i">
@@ -97,7 +94,7 @@
                                 formControlName="selectMonth"
                                 >
                                 <option></option>
-                                <option *ngFor="let x of listMonth"> Total for {{ x }} </option>
+                                <option *ngFor="let x of formData.listMonth"> Total for {{ x }} </option>
                                 </select>
                             </div>
                         </div>
@@ -109,7 +106,7 @@
                 </div>
             </div>
             <br/>
-            <div class="row date" *ngIf="clientForm.get('selectOption').value.includes('Date')">
+            <div class="row date" *ngIf="clientForm.get('selectOption')!.value.includes('Date')">
                 <div class="col">
                     <div formArrayName="selectDate" *ngFor="let d of addedDate.controls; let i=index">
                         <div [formGroupName]="i">
@@ -121,7 +118,7 @@
                                     formControlName="day"
                                     >
                                     <option></option>
-                                    <option *ngFor="let x of daylist"> {{ x }} </option>
+                                    <option *ngFor="let x of formData.daylist"> {{ x }} </option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -130,7 +127,7 @@
                                     formControlName="month"
                                     >
                                     <option></option>
-                                    <option *ngFor="let x of months"> {{ x }} </option>
+                                    <option *ngFor="let x of formData.months"> {{ x }} </option>
                                     </select>
                                 </div>
                                 <div class="col">
@@ -139,7 +136,7 @@
                                     formControlName="year"
                                     >
                                     <option></option>
-                                    <option *ngFor="let x of years"> 20{{ x }} </option>
+                                    <option *ngFor="let x of formData.years"> 20{{ x }} </option>
                                     </select>
                                 </div>
                             </div>
@@ -151,9 +148,13 @@
                     <button class="btn btn-primary" (click)="duplicateFields3()">Add another Date</button>
                 </div>
             </div>
-            <br/>
             <button class="btn btn-primary"> SUBMIT </button>
             </form>
         </div>
+    </div>
+    <br/>
+    <h2> Testing fake data: </h2>
+    <div *ngFor="let detail of info.getTestData(123)" >
+        <p>{{ detail | json }}</p>
     </div>
 </div>
