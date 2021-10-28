@@ -1,35 +1,31 @@
-<div class="container w-50 mt-5">
+<div class="container mt-5" [style.width.cm]="'25'">
     <div class="card">
         <div class="card-header">
             SALARY LIST
         </div>
         <div class="card-body">
-            <ul class="list-group">
-                <li class="list-group-item" *ngFor="let d of data.getTestData(123)">
-                    <div class="row">
-                        <div class="col">
-                            User Id: 
-                        </div>
-                        <div class="col">
-                            {{d.userId}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            Tax Period Date: 
-                        </div>
-                        <div class="col" *ngIf="d.exactPeriod.includes('Year')">
-                           {{d.taxYear!.year}}
-                        </div>
-                        <div class="col" *ngIf="d.exactPeriod.includes('Month')">
-                            {{d.taxMonth!.month}}
-                         </div>
-                         <div class="col" *ngIf="d.exactPeriod.includes('Date')">
-                            {{d.taxDate!.day+'-'+d.taxDate!.month+'-'+d.taxDate!.year}}
-                         </div>
-                    </div>
-                </li>
-            </ul>
+            <table class="table mt-2">
+                <thead class="text-primary">
+                    <th>User Id</th>
+                    <th>Company Name</th>
+                    <th>Amount</th>
+                    <th>Currency</th>
+                    <th>Tax Period</th>
+                    <th>Date</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let d of data.getTestData(123)">
+                        <td> {{d.userId}} </td>
+                        <td> {{d.companyName}} </td>
+                        <td> {{d.amount}} </td>
+                        <td> {{d.currency}} </td>
+                        <td> {{d.exactPeriod}} </td>
+                        <td *ngIf="d.exactPeriod.includes('Year')"> {{d.taxYear!.year}} </td>
+                        <td *ngIf="d.exactPeriod.includes('Month')"> {{d.taxMonth!.month}} </td>
+                        <td *ngIf="d.exactPeriod.includes('Date')"> {{d.taxDate!.day+'-'+d.taxDate!.month+'-'+d.taxDate!.year}} </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
