@@ -22,7 +22,7 @@ export class Info{
         data.companyName = 'Technology 1';
         data.amount = 200;
         data.currency = 'ZAR';
-        data.exactPeriod = 'Taxt Year';
+        data.exactPeriod = 'Taxt per Year';
         data.taxYear = new YearMonth();
         data.taxYear.year = "2021/2022";
         result.push(data);

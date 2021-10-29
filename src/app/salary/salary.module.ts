@@ -3,20 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TaxComponent } from './tax.component';
-
+import { SalaryListComponent } from './salary-list/salary-list.component';
 
 
 @NgModule({
   declarations: [
-    TaxComponent
+    TaxComponent,
+    SalaryListComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule
   ],
-  exports: [
-    TaxComponent
-  ]
+  exports: []
 })
 export class SalaryModule { }
