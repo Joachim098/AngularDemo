@@ -22,7 +22,7 @@ export class Info{
         data.companyName = 'Technology 1';
         data.amount = 200;
         data.currency = 'ZAR';
-        data.exactPeriod = 'Taxt per Year';
+        data.exactPeriod = 'Tax per Year';
         data.taxYear = new YearMonth();
         data.taxYear.year = "2021/2022";
         result.push(data);
@@ -33,7 +33,7 @@ export class Info{
         data.userId = userId;
         data.companyName = 'Technology 2';
         data.amount = 200;
-        data.currency = 'ZAR';
+        data.currency = 'DKK';
         data.exactPeriod = 'Tax per Month';
         data.taxMonth = new YearMonth();
         data.taxMonth.month = "Apr-2021";
@@ -45,12 +45,12 @@ export class Info{
         data.userId = userId;
         data.companyName = 'Technology 3';
         data.amount = 200;
-        data.currency = 'ZAR';
-        data.exactPeriod = 'Taxt per Specific Date';
+        data.currency = 'USD';
+        data.exactPeriod = 'Tax per Specific Date';
         data.taxDate = new Dates();
-        data.taxDate.day = 5;
+        data.taxDate.day = '5';
         data.taxDate.month = 'Mar';
-        data.taxDate.year = 2015;
+        data.taxDate.year = '2015';
         result.push(data);
         id++;
 

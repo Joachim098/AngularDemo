@@ -7,15 +7,45 @@ import { Info } from '../salary-information';
   styleUrls: ['./salary-list.component.css']
 })
 export class SalaryListComponent implements OnInit {
-
   data: Info;
+  show: Boolean = false;
+  default: Boolean = true;
+  getData: Info [];
+  results: Info[];
+  id: number;
+  company: string;
+  amount: number;
+  currency: string;
+  taxPeriod: string;
+  date: Info;
 
-  constructor() { 
-    this.data = new Info();
+  constructor() { this.data = new Info(); }
+
+  showDetail(id: number): void{
+    this.getData = this.data.getTestData(123);
+    this.getData.forEach(item => {
+      if (id === item.id){
+        this.show = !this.show;
+        this.id = item.id;
+        this.company = item.companyName;
+        this.amount = item.amount;
+        this.currency = item.currency;
+        this.taxPeriod = item.exactPeriod;
+        this.date = item;
+      }   
+    })
+  }
+  
+  deleteRecord(id: number): void{
+    this.results = this.data.getTestData(123);
+    this.results = this.results.filter(item => {
+      return item.id !== id;
+    });
+    console.log(this.results); 
   }
 
-  ngOnInit(): void {
-
+  ngOnInit(): void { 
+    this.deleteRecord(3); //testing
   }
 
 }
