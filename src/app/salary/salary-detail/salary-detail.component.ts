@@ -17,9 +17,8 @@ export class SalaryDetailComponent implements OnInit {
   
   constructor() { }
 
-  deletedChild(): void{ // --- this custum event is not emitting the value. I'm not sure what's the issue
-    confirm('Are you sure you want to delete this record?');
-    this.notify.emit(this.id.toString());
+  deletedChild(): void{
+    this.notify.emit(this.id.toString()); // --- this custum event is not emitting the value. I'm not sure what's the issue
   }
 
   ngOnInit(): void {
