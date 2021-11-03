@@ -15,10 +15,17 @@
                         <th>Date</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <div *ngIf="default">
-                        <!--display default data then if false, display new data-->
-                    </div>
+                <tbody *ngIf="!default">
+                        <tr *ngFor="let d of results" (click)="showDetail(d.id)">
+                            <td> {{d.id}} </td>
+                            <td> {{d.companyName}} </td>
+                            <td> {{d.amount | currency: d.currency: 'symbol-narrow': '1.2-2'}} </td>
+                            <td> {{d.currency}} </td>
+                            <td> {{d.exactPeriod}} </td>
+                            <td> {{d | datePipe}} </td>
+                        </tr> 
+                </tbody>    
+                <tbody *ngIf="default">
                     <tr *ngFor="let d of data.getTestData(123)" (click)="showDetail(d.id)">
                         <td> {{d.id}} </td>
                         <td> {{d.companyName}} </td>
@@ -26,8 +33,8 @@
                         <td> {{d.currency}} </td>
                         <td> {{d.exactPeriod}} </td>
                         <td> {{d | datePipe}} </td>
-                    </tr>    
-                </tbody>
+                    </tr> 
+                </tbody>          
             </table>
             <app-salary-detail *ngIf="show" 
                                 [id]="id"
@@ -36,9 +43,10 @@
                                 [currency]="currency"
                                 [taxPeriod]="taxPeriod"
                                 [date]="date"
-                                                            
+                                (deletedChild)="deleteRecord($event.toString())"                                               
             >
             </app-salary-detail>
+            
         </div>
     </div>
 </div>

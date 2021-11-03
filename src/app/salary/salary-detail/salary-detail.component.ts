@@ -13,8 +13,14 @@ export class SalaryDetailComponent implements OnInit {
   @Input() currency: string;
   @Input() taxPeriod: string;
   @Input() date: Info;
-
+  @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+  
   constructor() { }
+
+  deletedChild(): void{ // --- this custum event is not emitting the value. I'm not sure what's the issue
+    confirm('Are you sure you want to delete this record?');
+    this.notify.emit(this.id.toString());
+  }
 
   ngOnInit(): void {
   }

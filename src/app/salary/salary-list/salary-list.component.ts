@@ -19,6 +19,8 @@ export class SalaryListComponent implements OnInit {
   taxPeriod: string;
   date: Info;
 
+  message: string;
+
   constructor() { this.data = new Info(); }
 
   showDetail(id: number): void{
@@ -35,17 +37,18 @@ export class SalaryListComponent implements OnInit {
       }   
     })
   }
-  
-  deleteRecord(id: number): void{
+  deleteRecord(id: string): void{
+    this.default = false;
     this.results = this.data.getTestData(123);
     this.results = this.results.filter(item => {
-      return item.id !== id;
+      return item.id !== parseInt(id);
     });
-    console.log(this.results); 
+    console.log(this.results); //testing to see results
+ 
   }
 
   ngOnInit(): void { 
-    this.deleteRecord(3); //testing
+    //this.deleteRecord('3'); // remove the comment to test
   }
 
 }

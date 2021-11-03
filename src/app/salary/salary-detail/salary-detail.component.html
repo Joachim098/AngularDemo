@@ -20,7 +20,7 @@
             <div calss="col"> Date: {{date | datePipe}} </div>
         </div>
         <div class="row mt-3">
-            <div class="col-3">
+            <div class="col-3" (click)="deletedChild()">
                 <button class="btn btn-danger"> Delete </button>
             </div>
             <div class="col-3">
