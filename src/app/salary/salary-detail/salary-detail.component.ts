@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { Info } from '../salary-information';
+import { Salary } from '../salary';
 
 @Component({
   selector: 'app-salary-detail',
@@ -12,13 +12,13 @@ export class SalaryDetailComponent implements OnInit {
   @Input() amount: number;
   @Input() currency: string;
   @Input() taxPeriod: string;
-  @Input() date: Info;
+  @Input() date: Salary;
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
   
   constructor() { }
 
   deletedChild(): void{
-    this.notify.emit(this.id.toString()); // --- this custum event is not emitting the value. I'm not sure what's the issue
+    this.notify.emit(this.id.toString());
   }
 
   ngOnInit(): void {

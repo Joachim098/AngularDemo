@@ -43,7 +43,7 @@
                                 [currency]="currency"
                                 [taxPeriod]="taxPeriod"
                                 [date]="date"
-                                (deletedChild)="deleteRecord($event.toString())"
+                                (notify)="deleteRecord($event)"
             >
             </app-salary-detail>
         </div>

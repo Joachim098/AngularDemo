@@ -1,26 +1,59 @@
-export class FormData{
-     currency: string[] = ['ZAR', 'USD', 'EUR', 'CAD', 'DKK'];
-     listYear: string[] = [
-       '2021/2022','2020/2021','2019/2020','2018/2019','2017/2018','2016/2017',
-       '2015/2016','2014/2015','2013/2014','2012/2013','2011/2012','2010/2011'
-      ];
-      listMonth: string [] = []
-      daylist: number[] = [];
-      months: string[] = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
-      years: number[] = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+import { Dates } from "./dates";
+import { YearMonth } from "./year-month";
 
-      displayFormInputData(){
-        let i: number = 0;
-        let x: number = 0;
-        for (i=0; i<this.years.length; i++){
-            for(x=0; x<this.months.length; x++){
-                this.listMonth.push(this.months[x]+ "-"+ this.years[i]);
-            }
-        }
-        this.listMonth.reverse(); 
-        let y: number = 1;
-        for (y; y<32; y++){
-            this.daylist.push(y);
-        }
+export class Salary{
+    id: number;
+    userId: number;
+    companyName: string;
+    amount: number;
+    currency: string;
+    exactPeriod: string;
+    taxYear?: YearMonth;
+    taxMonth?: YearMonth;
+    taxDate?: Dates;
+
+    getTestData(userId: number): Salary[]{
+        let result: Salary[] = [];
+        let id: number = 1;
+        let data = new Salary();
+
+        data.id = id;
+        data.userId = userId;
+        data.companyName = 'Technology 1';
+        data.amount = 200;
+        data.currency = 'ZAR';
+        data.exactPeriod = 'Tax per Year';
+        data.taxYear = new YearMonth();
+        data.taxYear.year = "2021/2022";
+        result.push(data);
+        id++;
+
+        data = new Salary();
+        data.id = id;
+        data.userId = userId;
+        data.companyName = 'Technology 2';
+        data.amount = 200;
+        data.currency = 'DKK';
+        data.exactPeriod = 'Tax per Month';
+        data.taxMonth = new YearMonth();
+        data.taxMonth.month = "Apr-2021";
+        result.push(data);
+        id++;
+
+        data = new Salary();
+        data.id = id;
+        data.userId = userId;
+        data.companyName = 'Technology 3';
+        data.amount = 200;
+        data.currency = 'USD';
+        data.exactPeriod = 'Tax per Specific Date';
+        data.taxDate = new Dates();
+        data.taxDate.day = '5';
+        data.taxDate.month = 'Mar';
+        data.taxDate.year = '2015';
+        result.push(data);
+        id++;
+
+        return result;
     }
 }

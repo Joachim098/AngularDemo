@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Info } from '../salary-information';
+import { Salary } from '../salary';
 
 @Component({
   selector: 'app-salary-list',
@@ -7,19 +7,19 @@ import { Info } from '../salary-information';
   styleUrls: ['./salary-list.component.css']
 })
 export class SalaryListComponent implements OnInit {
-  data: Info;
+  data: Salary;
   show: Boolean = false;
   default: Boolean = true;
-  getData: Info [];
-  results: Info[];
+  getData: Salary [];
+  results: Salary[];
   id: number;
   company: string;
   amount: number;
   currency: string;
   taxPeriod: string;
-  date: Info;
+  date: Salary;
 
-  constructor() { this.data = new Info(); }
+  constructor() { this.data = new Salary(); }
 
   showDetail(id: number): void{
     this.getData = this.data.getTestData(123);
@@ -38,16 +38,14 @@ export class SalaryListComponent implements OnInit {
   deleteRecord(value: string): void{
     if (confirm('Are you sure you want to delete this record?')){
       this.default = false;
+      this.show = !this.show;
       this.results = this.data.getTestData(123);
-      this.results = this.results.filter(item => {
-        return item.id !== parseInt(value);
-      });
-      console.log(this.results); //testing to see results
+      this.results.splice(parseInt(value)-1, 1);  
     }
   }
 
   ngOnInit(): void { 
-    //this.deleteRecord('3'); // remove the comment to test
+    this.data.getTestData(123);
   }
 
 }
