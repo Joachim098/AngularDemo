@@ -7,18 +7,13 @@ import { Salary } from '../salary';
   styleUrls: ['./salary-detail.component.css']
 })
 export class SalaryDetailComponent implements OnInit {
-  @Input() id: number; 
-  @Input() company: string; 
-  @Input() amount: number;
-  @Input() currency: string;
-  @Input() taxPeriod: string;
-  @Input() date: Salary;
+  @Input() salary: Salary = new Salary(); 
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
   
   constructor() { }
 
   deletedChild(): void{
-    this.notify.emit(this.id.toString());
+    this.notify.emit(this.salary.id.toString());
   }
 
   ngOnInit(): void {

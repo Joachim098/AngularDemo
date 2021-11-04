@@ -37,12 +37,7 @@
                 </tbody>          
             </table>
             <app-salary-detail *ngIf="show" 
-                                [id]="id"
-                                [company]="company"
-                                [amount]="amount"
-                                [currency]="currency"
-                                [taxPeriod]="taxPeriod"
-                                [date]="date"
+                                [salary]="salary"
                                 (notify)="deleteRecord($event)"
             >
             </app-salary-detail>

@@ -7,31 +7,31 @@ import { Salary } from '../salary';
   styleUrls: ['./salary-list.component.css']
 })
 export class SalaryListComponent implements OnInit {
-  data: Salary;
   show: Boolean = false;
   default: Boolean = true;
+  data: Salary;
   getData: Salary [];
   results: Salary[];
-  id: number;
-  company: string;
-  amount: number;
-  currency: string;
-  taxPeriod: string;
-  date: Salary;
+  salary: Salary = new Salary();
 
-  constructor() { this.data = new Salary(); }
+  constructor() { 
+    this.data = new Salary(); 
+  }
 
   showDetail(id: number): void{
     this.getData = this.data.getTestData(123);
     this.getData.forEach(item => {
       if (id === item.id){
         this.show = !this.show;
-        this.id = item.id;
-        this.company = item.companyName;
-        this.amount = item.amount;
-        this.currency = item.currency;
-        this.taxPeriod = item.exactPeriod;
-        this.date = item;
+        this.salary.id = item.id;
+        this.salary.userId = item.userId;
+        this.salary.companyName = item.companyName;
+        this.salary.amount = item.amount;
+        this.salary.currency = item.currency;
+        this.salary.exactPeriod = item.exactPeriod;
+        this.salary.taxDate = item.taxDate;
+        this.salary.taxMonth = item.taxMonth;
+        this.salary.taxYear = item.taxYear;
       }   
     })
   }
