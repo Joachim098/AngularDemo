@@ -1,5 +1,5 @@
 export class Dates {
-    day: number;
+    day: string;
     month: string;
-    year: number;
+    year: string;
 }

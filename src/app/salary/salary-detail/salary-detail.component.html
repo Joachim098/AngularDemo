@@ -1,0 +1,31 @@
+<div class="card w-50">
+    <div class="card-header"> Salary Detail </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col"> Id: {{salary.id}} </div> 
+        </div>
+        <div class="row">
+            <div calss="col"> Company: {{salary.companyName}} </div>
+        </div>
+        <div class="row">
+            <div calss="col"> Amount: {{salary.amount | currency: salary.currency: 'symbol-narrow'}} </div>
+        </div>
+        <div class="row">
+            <div calss="col"> Currency: {{salary.currency}} </div>
+        </div>
+        <div class="row">
+            <div calss="col"> Tax Period: {{salary.exactPeriod}} </div>
+        </div>
+        <div class="row">
+            <div calss="col"> Date: {{salary | datePipe}} </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-3" (click)="deletedChild()">
+                <button class="btn btn-danger"> Delete </button>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-primary"> Edit </button>
+            </div>
+        </div>
+    </div>
+</div>

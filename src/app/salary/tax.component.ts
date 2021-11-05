@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormData } from './salary';
-import { Info } from './salary-information';
+import { FormData } from './form-data';
 
 @Component({
   selector: 'app-tax',
@@ -11,7 +10,6 @@ import { Info } from './salary-information';
 export class TaxComponent implements OnInit {
   clientForm: FormGroup;
   formData: FormData;
-  info : Info;
 
   addYear(): FormGroup{
     return this.fb.group({
@@ -54,7 +52,6 @@ export class TaxComponent implements OnInit {
 
   constructor(private fb: FormBuilder) {
     this.formData = new FormData();
-    this.info = new Info();
    }
 
   ngOnInit(): void {
