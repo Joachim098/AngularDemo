@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FormData } from './form-data';
+import { FormData } from '../form-data';
 
 @Component({
-  selector: 'app-tax',
-  templateUrl: './tax.component.html',
-  styleUrls: ['./tax.component.css']
+  selector: 'app-salary-add-edit',
+  templateUrl: './salary-add-edit.component.html',
+  styleUrls: ['./salary-add-edit.component.css']
 })
-export class TaxComponent implements OnInit {
+export class SalaryAddEditComponent implements OnInit {
   clientForm: FormGroup;
   formData: FormData;
 
   addYear(): FormGroup{
     return this.fb.group({
-      selectYear: ''
+      selectYear: ['', Validators.required]
     });
   }
   get addedYears(): FormArray{
@@ -21,7 +21,7 @@ export class TaxComponent implements OnInit {
   }
   addMonth(): FormGroup{
     return this.fb.group({
-      selectMonth: ''
+      selectMonth: ['', Validators.required]
     });
   }
   get addedMonths(): FormArray{
@@ -29,9 +29,9 @@ export class TaxComponent implements OnInit {
   }
   addDate(): FormGroup{
     return this.fb.group({
-      day: '',
-      month: '',
-      year: ''
+      day: ['', Validators.required],
+      month: ['', Validators.required],
+      year: ['', Validators.required]
     });
   }
   get addedDate(): FormArray{
@@ -56,8 +56,8 @@ export class TaxComponent implements OnInit {
 
   ngOnInit(): void {
     this.clientForm = this.fb.group({
-      company: ['', Validators.required],
-      amount: ['', Validators.required],
+      company: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+      amount: ['', [Validators.required, Validators.min(0.01), Validators.max(1000000)]],
       currency:['', Validators.required],
       selectOption: ['', Validators.required],
       selectYear: this.fb.array([this.addYear()]),
