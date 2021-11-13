@@ -7,27 +7,18 @@
             <table class="table mt-2">
                 <thead class="text-primary">
                     <tr>
+                        <th> <button class="btn btn-primary" [routerLink]="['/salary-record', 0]"> Create New </button> </th>
                         <th>Record Id</th>
                         <th>Company Name</th>
                         <th>Amount</th>
                         <th>Currency</th>
                         <th>Tax Period</th>
                         <th>Date</th>
-                        <th> <button class="btn btn-primary" routerLink="/salary-record"> Create New </button> </th>
                     </tr>
                 </thead>
-                <tbody *ngIf="!default">
-                        <tr *ngFor="let d of results" (click)="showDetail(d.id)">
-                            <td> {{d.id}} </td>
-                            <td> {{d.companyName}} </td>
-                            <td> {{d.amount | currency: d.currency: 'symbol-narrow': '1.2-2'}} </td>
-                            <td> {{d.currency}} </td>
-                            <td> {{d.exactPeriod}} </td>
-                            <td> {{d | datePipe}} </td>
-                        </tr> 
-                </tbody>    
-                <tbody *ngIf="default">
-                    <tr *ngFor="let d of data.getTestData(123)" (click)="showDetail(d.id)">
+                <tbody>
+                    <tr *ngFor="let d of results" (click)="showDetail(d.id)">
+                        <td></td>
                         <td> {{d.id}} </td>
                         <td> {{d.companyName}} </td>
                         <td> {{d.amount | currency: d.currency: 'symbol-narrow': '1.2-2'}} </td>
@@ -35,7 +26,7 @@
                         <td> {{d.exactPeriod}} </td>
                         <td> {{d | datePipe}} </td>
                     </tr> 
-                </tbody>          
+                </tbody>   
             </table>
             <app-salary-detail *ngIf="show" 
                                 [salary]="salary"

@@ -1,10 +1,7 @@
 <nav class="navbar navbar-expand navbar-light bg-primary">
   <h2 style="margin-left: 2cm;"><a class="navbar-brand text-white"> {{title}}</a></h2>
   <ul class="nav nav-pills">
-    <li style="margin-left: 0.3cm;"> <a class="nav-link text-white" routerLink="/salary-record"> Salary Record </a> </li>
-    <li style="margin-left: 0.3cm;"> <a class="nav-link text-white" routerLink="/salary-list"> Salary List </a> </li>
+    <li style="margin-left: 0.3cm;"> <button class="nav-link text-white" (click)="redirectUser()"> Salary List </button> </li>
   </ul>
 </nav>
 <router-outlet></router-outlet>
-    
-  

@@ -21,9 +21,10 @@ import { DatePipePipe } from '../pipes/date-pipe.pipe';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
-      {path: 'salary-record', component: SalaryAddEditComponent},
+      {path: 'salary-record/:id', component: SalaryAddEditComponent},
       {path: 'salary-list', component: SalaryListComponent},
-      {path: '', redirectTo: 'salary-record', pathMatch: 'full'}
+      {path: '', redirectTo: 'salary-record/0', pathMatch: 'full'},
+      {path: '**', redirectTo: 'salary-record/0', pathMatch: 'full'}
     ])
   ],
   exports: []

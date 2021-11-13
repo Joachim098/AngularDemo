@@ -1,12 +1,11 @@
 <div class="container w-50 mt-5">
     <div class="card">
         <div class="card-header">
-            SALARY RECORD
+            {{ editData.id > 0 ? 'EDIT SALARY RECORD' : 'ADD SALARY RECORD ' }}
         </div>
         <div class="card-body mt-2">
             <form 
-            novalidate
-            (ngSubmit)="save()" 
+            novalidate 
             [formGroup]="clientForm"
             >
             <div class="row">
@@ -16,6 +15,7 @@
                     class="form-control form-control-lg" 
                     type="text" 
                     placeholder="Enter Company Name"
+                    value = "life is good"
                     formControlName="company"
                     [ngClass]="{'is-invalid': (clientForm.get('company')!.touched || clientForm.get('company')!.dirty) && !clientForm.get('company')!.valid}"
                     >
@@ -51,7 +51,7 @@
                     formControlName="currency" 
                     [ngClass]="{'is-invalid': (clientForm.get('currency')!.touched || clientForm.get('currency')!.dirty) && !clientForm.get('currency')!.valid}"
                     >
-                    <option></option>
+                    <option [defaultSelected]="true" [value]="editData.currency"> {{editData.currency}} </option>
                     <option *ngFor="let c of formData.currency"> {{ c }} </option>
                     </select>
                     <span class="invalid-feedback"> 
@@ -68,9 +68,8 @@
                     formControlName="selectOption"
                     [ngClass]="{'is-invalid': (clientForm.get('selectOption')!.touched || clientForm.get('selectOption')!.dirty) && !clientForm.get('selectOption')!.valid}" 
                     >
-                    <option> Enter for full Tax Year </option>
-                    <option> Enter per Month </option>
-                    <option> Enter per Specific Date</option>
+                    <option [defaultSelected]="true" [value]="editData.exactPeriod"> {{editData.exactPeriod}} </option>
+                    <option *ngFor="let opt of formData.options"> {{opt}} </option>
                     </select>
                     <span class="invalid-feedback"> 
                         <span *ngIf="clientForm.get('selectOption')?.errors?.required"> Please enter the tax period </span>
@@ -89,7 +88,7 @@
                                 formControlName="selectYear"
                                 [ngClass]="{'is-invalid': (year.get('selectYear')!.touched || year.get('selectYear')!.dirty) && !year.get('selectYear')!.valid}"
                                 >
-                                <option></option>
+                                <option [defaultSelected]="true" [value]="editData.taxYear?.year"> {{editData.taxYear?.year}} </option>
                                 <option *ngFor="let x of formData.listYear"> Total for {{ x }} Tax Year </option>
                                 </select>
                                 <span class="invalid-feedback"> 
@@ -116,7 +115,7 @@
                                 formControlName="selectMonth"
                                 [ngClass]="{'is-invalid': (m.get('selectMonth')!.touched || m.get('selectMonth')!.dirty) && !m.get('selectMonth')!.valid}"
                                 >
-                                <option></option>
+                                <option [defaultSelected]="true" [value]="editData.taxMonth?.month"> {{editData.taxMonth?.month}} </option>
                                 <option *ngFor="let x of formData.listMonth"> Total for {{ x }} </option>
                                 </select>
                                 <span class="invalid-feedback"> 
@@ -144,7 +143,7 @@
                                     formControlName="day"
                                     [ngClass]="{'is-invalid': (d.get('day') || d.get('day')!.dirty) && !d.get('day')!.valid}"
                                     >
-                                    <option></option>
+                                    <option [defaultSelected]="true" [value]="editData.taxDate?.day"> {{editData.taxDate?.day}} </option>
                                     <option *ngFor="let x of formData.daylist"> {{ x }} </option>
                                     </select>
                                     <span class="invalid-feedback"> 
@@ -157,7 +156,7 @@
                                     formControlName="month"
                                     [ngClass]="{'is-invalid': (d.get('month') || d.get('month')!.dirty) && !d.get('month')!.valid}"
                                     >
-                                    <option></option>
+                                    <option [defaultSelected]="true" [value]="editData.taxDate?.month"> {{editData.taxDate?.month}} </option>
                                     <option *ngFor="let x of formData.months"> {{ x }} </option>
                                     </select>
                                     <span class="invalid-feedback"> 
@@ -170,7 +169,7 @@
                                     formControlName="year"
                                     [ngClass]="{'is-invalid': (d.get('year') || d.get('year')!.dirty) && !d.get('year')!.valid}"
                                     >
-                                    <option></option>
+                                    <option [defaultSelected]="true" [value]="editData.taxDate?.year"> {{editData.taxDate?.year}} </option>
                                     <option *ngFor="let x of formData.years"> 20{{ x }} </option>
                                     </select>
                                     <span class="invalid-feedback"> 
@@ -186,7 +185,7 @@
                     <button [disabled]="!addedDate.valid" class="btn btn-primary" (click)="duplicateFields3()">Add another Date</button>
                 </div>
             </div>
-            <button class="btn btn-primary"> SUBMIT </button>
+            <button class="btn btn-primary" [disabled]="clientForm.untouched" (click)="editData.id > 0 ? addEditRecord(editData.id.toString()) : addNewRecord()"> {{ editData.id > 0 ? 'Update Record' : 'Add New Record' }} </button>
             </form>
         </div>
     </div>
