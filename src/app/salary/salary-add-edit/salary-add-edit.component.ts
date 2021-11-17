@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute} from '@angular/router';
 import { FormData } from '../form-data';
 import { Salary } from '../salary';
 import { Dates } from '../dates';
@@ -12,50 +12,82 @@ import { YearMonth } from '../year-month';
   styleUrls: ['./salary-add-edit.component.css']
 })
 export class SalaryAddEditComponent implements OnInit {
+  btnLabel: string;
+  formLabel: string;
   clientForm: FormGroup;
   formData: FormData;
+  numberOfDays: number [] = [];
   routerId: string = this.router.snapshot.paramMap.get('id')!;
   salary: Salary;
   editData: Salary;
   id: number = 0;
-
-  addYear(): FormGroup{
-    return this.fb.group({
-      selectYear: ['', Validators.required]
-    });
+  
+  
+  getNumberOfDays(): void{
+    let num: number = 1;
+    if (this.clientForm.get('month')!.value.includes('Jan') || 
+        this.clientForm.get('month')!.value.includes('Mar') || 
+        this.clientForm.get('month')!.value.includes('May') ||
+        this.clientForm.get('month')!.value.includes('Jul') ||
+        this.clientForm.get('month')!.value.includes('Aug') ||
+        this.clientForm.get('month')!.value.includes('Oct') ||
+        this.clientForm.get('month')!.value.includes('Dec')){
+          for (num; num<32; num++){
+            this.numberOfDays[num] = num;
+          }
+    }
+    if (this.clientForm.get('month')!.value.includes('Apr') || 
+        this.clientForm.get('month')!.value.includes('Jun') || 
+        this.clientForm.get('month')!.value.includes('Sep') ||
+        this.clientForm.get('month')!.value.includes('Nov')){
+          for (num; num<31; num++){
+            this.numberOfDays[num] = num;
+          }
+    } 
+    if (this.clientForm.get('month')!.value.includes('Feb')){
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2012){
+      for (num; num<30; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2016){
+      for (num; num<30; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2020){
+      for (num; num<30; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2012){
+      for (num; num<30; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
   }
-  get addedYears(): FormArray{
-    return <FormArray>this.clientForm.get('selectYear');
+  checkValidity():void{
+    if(this.clientForm.get('selectOption')!.value.includes('Year')){
+      this.clientForm.get('selectYear')!.setValidators(Validators.required);
+      this.clientForm.get('selectYear')!.updateValueAndValidity();
+    }
+    if(this.clientForm.get('selectOption')!.value.includes('Month')){
+      this.clientForm.get('selectMonth')!.setValidators(Validators.required);
+      this.clientForm.get('selectMonth')!.updateValueAndValidity();
+    }
+    if(this.clientForm.get('selectOption')!.value.includes('Date')){
+      this.clientForm.get('year')!.setValidators(Validators.required);
+      this.clientForm.get('month')!.setValidators(Validators.required);
+      this.clientForm.get('day')!.setValidators(Validators.required);
+      this.clientForm.get('year')!.updateValueAndValidity();
+      this.clientForm.get('month')!.updateValueAndValidity();
+      this.clientForm.get('day')!.updateValueAndValidity();   
+    }
   }
-  addMonth(): FormGroup{
-    return this.fb.group({
-      selectMonth: ['', Validators.required]
-    });
-  }
-  get addedMonths(): FormArray{
-    return <FormArray>this.clientForm.get('selectMonth');
-  }
-  addDate(): FormGroup{
-    return this.fb.group({
-      day: ['', Validators.required],
-      month: ['', Validators.required],
-      year: ['', Validators.required]
-    });
-  }
-  get addedDate(): FormArray{
-    return <FormArray>this.clientForm.get('selectDate');
-  }
-
-  duplicateFields1(): void{
-    this.addedYears.push(this.addYear()); 
-  }
-  duplicateFields2(): void{
-    this.addedMonths.push(this.addMonth()); 
-  }
-  duplicateFields3(): void{
-    this.addedDate.push(this.addDate()); 
-  }
-
   getEditRecord(id: string): Salary[]{
     let results: Salary[] = this.salary.getTestData(123);
     let newResults: Salary[] = [];
@@ -64,7 +96,7 @@ export class SalaryAddEditComponent implements OnInit {
         newResults.push(element);
       }
     })
-    return newResults; //it works, but it's pulling data from the salary fake data method for now. 
+    return newResults;
   }
   addEditRecord(id: string): void{
     let results: Salary [] = this.salary.getTestData(123);
@@ -79,41 +111,30 @@ export class SalaryAddEditComponent implements OnInit {
         newData.exactPeriod =this.clientForm.get('selectOption')?.value;
         
         if (newData.exactPeriod.includes('Year')){
-          let value = Object.assign({}, ...this.addedYears.value);
-          let finalValue = value.selectYear.substr(10, 9);
+          let value = this.clientForm.get('selectYear')!.value;
+          let finalValue = value.substr(10, 9);
           newData.taxYear = new YearMonth();
           newData.taxYear.year = finalValue;
         }
         if (newData.exactPeriod.includes('Month')){
-          let value = Object.assign({}, ...this.addedMonths.value);
-          let finalValue = value.selectMonth.substr(10, 6);
+          let value = this.clientForm.get('selectMonth')!.value;
+          let finalValue = value.substr(10, 6);
           newData.taxMonth = new YearMonth();
           newData.taxMonth.month = finalValue;  
         }
         if (newData.exactPeriod.includes('Date')){
-          let value = Object.assign({}, ...this.addedDate.value);
+          let day = this.clientForm.get('day')!.value 
+          let month = this.clientForm.get('month')!.value 
+          let year = this.clientForm.get('year')!.value;
           newData.taxDate = new Dates();
-          newData.taxDate.day = value.day;
-          newData.taxDate.month = value.month;
-          newData.taxDate.year =value.year;  
+          newData.taxDate.day = day;
+          newData.taxDate.month = month;
+          newData.taxDate.year = year;  
         }
 
         results = results.map(u => u.id !== newData.id ? u : newData);
         alert('Record has been updated!');
-        console.log(results); //testing new results after editing a record
-        
-        this.route.navigate(['/salary-list', {
-          id: newData.id,
-          name: newData.companyName,
-          amount: newData.amount,
-          currency: newData.currency,
-          period: newData.exactPeriod,
-          taxYear: newData.taxYear?.year,
-          taxMonth: newData.taxMonth?.month,
-          taxDateDay: newData.taxDate?.day,
-          taxDateMonth: newData.taxDate?.month, 
-          taxDateYear: newData.taxDate?.year
-        }]);
+        console.log(results);
       }
     });
   }
@@ -129,58 +150,57 @@ export class SalaryAddEditComponent implements OnInit {
     record.exactPeriod = this.clientForm.get('selectOption')?.value;
 
     if (record.exactPeriod.includes('Year')){
-      let value = Object.assign({}, ...this.addedYears.value);
-      let finalValue = value.selectYear.substr(10, 9);
+      let value = this.clientForm.get('selectYear')!.value;
+      let finalValue = value.substr(10, 9);
       record.taxYear = new YearMonth();
       record.taxYear.year = finalValue;
     }
     if (record.exactPeriod.includes('Month')){
-      let value = Object.assign({}, ...this.addedMonths.value);
-      let finalValue = value.selectMonth.substr(10, 6);
+      let value = this.clientForm.get('selectMonth')!.value;
+      let finalValue = value.substr(10, 6);
       record.taxMonth = new YearMonth();
       record.taxMonth.month = finalValue;  
     }
     if (record.exactPeriod.includes('Date')){
-      let value = Object.assign({}, ...this.addedDate.value);
+      let day = this.clientForm.get('day')!.value 
+      let month = this.clientForm.get('month')!.value 
+      let year = this.clientForm.get('year')!.value;
       record.taxDate = new Dates();
-      record.taxDate.day = value.day;
-      record.taxDate.month = value.month;
-      record.taxDate.year =value.year;  
+      record.taxDate.day = day;
+      record.taxDate.month = month;
+      record.taxDate.year = year;  
     }
     results.push(record);
     console.log(results);// testing new added record
     alert('New Record added!');
-
-    this.route.navigate(['/salary-list', {
-      id: record.id,
-      name: record.companyName,
-      amount: record.amount,
-      currency: record.currency,
-      period: record.exactPeriod,
-      taxYear: record.taxYear?.year,
-      taxMonth: record.taxMonth?.month,
-      taxDateDay: record.taxDate?.day,
-      taxDateMonth: record.taxDate?.month, 
-      taxDateYear: record.taxDate?.year
-    }]);
   }
 
-  constructor(private fb: FormBuilder, private router: ActivatedRoute, private route: Router) {
+  constructor(private fb: FormBuilder, private router: ActivatedRoute) {
     this.formData = new FormData();
     this.salary = new Salary();
-    this.editData = Object.assign({}, ...this.getEditRecord(this.routerId)); //returns fake data for now.
+    this.editData = Object.assign({}, ...this.getEditRecord(this.routerId));
    }
 
   ngOnInit(): void {
-    this.clientForm = this.fb!.group({
-      company: [this.editData.companyName, [Validators.required, Validators.minLength(2), Validators.maxLength(100)]],
+    this.clientForm = this.fb!.group({  
+      company: [this.editData.companyName, [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern(/^(?!\s).*$/)]],
       amount: [this.editData.amount, [Validators.required, Validators.min(0.01), Validators.max(1000000)]],
       currency:['', Validators.required],
       selectOption: ['', Validators.required],
-      selectYear: this.fb.array([this.addYear()]),
-      selectMonth: this.fb.array([this.addMonth()]),
-      selectDate: this.fb.array([this.addDate()]),
+      selectYear: '',
+      selectMonth: '',
+      day: '',
+      month: '',
+      year: ''
     });
     this.formData.displayFormInputData();
+    if(this.editData.id > 0){
+      this.btnLabel = 'Update Record';
+      this.formLabel = 'EDIT SALARY RECORD'
+    }
+    else{
+      this.btnLabel = 'Add New Record'
+      this.formLabel = 'ADD SALARY RECORD';
+    }
   }
 }

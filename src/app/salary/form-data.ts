@@ -6,7 +6,6 @@ export class FormData{
       ];
       options: string[] = ['Enter for full Tax Year', 'Enter per Month', 'Enter per Specific Date']
       listMonth: string [] = []
-      daylist: number[] = [];
       months: string[] = ['Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar'];
       years: number[] = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 
@@ -19,9 +18,5 @@ export class FormData{
             }
         }
         this.listMonth.reverse(); 
-        let y: number = 1;
-        for (y; y<32; y++){
-            this.daylist.push(y);
-        }
     }
 }
