@@ -4,6 +4,25 @@
             SALARY LIST
         </div>
         <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-5">
+                    Search
+                    <input 
+                    class="form-control form-control-md" 
+                    type="text" 
+                    [(ngModel)]="listSearch" 
+                    (change)="clearFilter()"
+                    placeholder="Search by company...">
+                </div>
+                <div class="col-4">
+                    Filter by:
+                    <select [(ngModel)]="selectedFilter" (change)="getFilteredSalary()" class="form-select form-select-md">
+                        <option> Year </option>
+                        <option> Month </option>
+                        <option> Specific Date </option>
+                    </select>    
+                </div>
+            </div> 
             <table class="table mt-2">
                 <thead class="text-primary">
                     <tr>
@@ -26,7 +45,7 @@
                         </tr> 
                 </tbody>    
                 <tbody *ngIf="default">
-                    <tr *ngFor="let d of data.getTestData(123)" (click)="showDetail(d.id)">
+                    <tr *ngFor="let d of filteredResults" (click)="showDetail(d.id)">
                         <td> {{d.id}} </td>
                         <td> {{d.companyName}} </td>
                         <td> {{d.amount | currency: d.currency: 'symbol-narrow': '1.2-2'}} </td>
