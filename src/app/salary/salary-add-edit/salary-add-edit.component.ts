@@ -16,7 +16,7 @@ export class SalaryAddEditComponent implements OnInit {
   formLabel: string;
   clientForm: FormGroup;
   formData: FormData;
-  numberOfDays: number [] = [];
+  numberOfDays: number [];
   routerId: string = this.router.snapshot.paramMap.get('id')!;
   salary: Salary;
   editData: Salary;
@@ -24,6 +24,7 @@ export class SalaryAddEditComponent implements OnInit {
   
   
   getNumberOfDays(): void{
+    this.checkValidity();
     let num: number = 1;
     if (this.clientForm.get('month')!.value.includes('Jan') || 
         this.clientForm.get('month')!.value.includes('Mar') || 
@@ -32,45 +33,122 @@ export class SalaryAddEditComponent implements OnInit {
         this.clientForm.get('month')!.value.includes('Aug') ||
         this.clientForm.get('month')!.value.includes('Oct') ||
         this.clientForm.get('month')!.value.includes('Dec')){
+          this.numberOfDays = [];
           for (num; num<32; num++){
             this.numberOfDays[num] = num;
           }
     }
-    if (this.clientForm.get('month')!.value.includes('Apr') || 
-        this.clientForm.get('month')!.value.includes('Jun') || 
-        this.clientForm.get('month')!.value.includes('Sep') ||
-        this.clientForm.get('month')!.value.includes('Nov')){
-          for (num; num<31; num++){
-            this.numberOfDays[num] = num;
-          }
+    else if (this.clientForm.get('month')!.value.includes('Apr') || 
+            this.clientForm.get('month')!.value.includes('Jun') || 
+            this.clientForm.get('month')!.value.includes('Sep') ||
+            this.clientForm.get('month')!.value.includes('Nov')){
+              this.numberOfDays = [];
+              for (num; num<31; num++){
+                this.numberOfDays[num] = num;
+              }
     } 
-    if (this.clientForm.get('month')!.value.includes('Feb')){
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2010){
+      this.numberOfDays = [];
       for (num; num<29; num++){
         this.numberOfDays[num] = num;
       }
     }
-    if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2012){
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2011){
+      this.numberOfDays = [];
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2013){
+      this.numberOfDays = [];
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2014){
+      this.numberOfDays = [];
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2015){
+      this.numberOfDays = [];
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2017){
+      this.numberOfDays = [];
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2018){
+      this.numberOfDays = [];
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2019){
+      this.numberOfDays = [];
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2021){
+      this.numberOfDays = [];
+      for (num; num<29; num++){
+        this.numberOfDays[num] = num;
+      }
+    }
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2012){
+      this.numberOfDays = [];
       for (num; num<30; num++){
         this.numberOfDays[num] = num;
       }
     }
-    if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2016){
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2016){
+      this.numberOfDays = [];
       for (num; num<30; num++){
         this.numberOfDays[num] = num;
       }
     }
-    if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2020){
-      for (num; num<30; num++){
-        this.numberOfDays[num] = num;
-      }
-    }
-    if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2012){
+    else if (this.clientForm.get('month')!.value.includes('Feb') && this.clientForm.get('year')!.value == 2020){
+      this.numberOfDays = [];
       for (num; num<30; num++){
         this.numberOfDays[num] = num;
       }
     }
   }
   checkValidity():void{
+    if (this.clientForm.get('currency')!.value == 'null' || this.clientForm.get('currency')!.value == 'undefined'){
+      this.clientForm.get('currency')!.setValue('');
+      this.clientForm.get('currency')!.updateValueAndValidity();  
+    }
+    if (this.clientForm.get('selectOption')!.value == 'null' || this.clientForm.get('day')!.value == 'undefined'){
+      this.clientForm.get('selectOption')!.setValue('');
+      this.clientForm.get('selectOption')!.updateValueAndValidity();
+    }
+    if (this.clientForm.get('selectYear')!.value == 'null' || this.clientForm.get('selectYear')!.value == 'undefined'){
+      this.clientForm.get('selectYear')!.setValue('');
+      this.clientForm.get('selectYear')!.updateValueAndValidity();
+    }
+    if (this.clientForm.get('selectMonth')!.value == 'null' || this.clientForm.get('selectMonth')!.value == 'undefined'){
+      this.clientForm.get('selectMonth')!.setValue('');
+      this.clientForm.get('selectMonth')!.updateValueAndValidity();
+    }
+    if (this.clientForm.get('year')!.value == 'null' || this.clientForm.get('year')!.value == 'undefined'){
+      this.clientForm.get('year')!.setValue('');
+      this.clientForm.get('year')!.updateValueAndValidity();
+    }
+    if (this.clientForm.get('month')!.value == 'null' || this.clientForm.get('month')!.value == 'undefined'){
+      this.clientForm.get('month')!.setValue('');
+      this.clientForm.get('month')!.updateValueAndValidity();
+    }
+    if (this.clientForm.get('day')!.value == 'null' || this.clientForm.get('day')!.value == 'undefined'){
+      this.clientForm.get('day')!.setValue('');
+      this.clientForm.get('day')!.updateValueAndValidity();
+    }
     if(this.clientForm.get('selectOption')!.value.includes('Year')){
       this.clientForm.get('selectYear')!.setValidators(Validators.required);
       this.clientForm.get('selectYear')!.updateValueAndValidity();
@@ -179,6 +257,15 @@ export class SalaryAddEditComponent implements OnInit {
     this.formData = new FormData();
     this.salary = new Salary();
     this.editData = Object.assign({}, ...this.getEditRecord(this.routerId));
+   }
+
+   saveSalary(): void{
+     if (this.editData.id > 0){
+       return this.addEditRecord(this.editData.id.toString());
+     }
+     else{
+       return this.addNewRecord();
+     }
    }
 
   ngOnInit(): void {

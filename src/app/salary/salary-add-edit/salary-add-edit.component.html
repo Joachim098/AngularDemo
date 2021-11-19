@@ -7,7 +7,7 @@
             <form 
             novalidate 
             [formGroup]="clientForm"
-            (ngSubmit)="editData.id > 0 ? addEditRecord(editData.id.toString()) : addNewRecord()"
+            (ngSubmit)="saveSalary()"
             >
             <div class="row">
                 <div class="col">
@@ -47,12 +47,13 @@
                 </div>
                 <div class="col">
                     <p class="h6">CURRENCY</p>
-                    <select 
+                    <select
+                    (change)="checkValidity()" 
                     class="form-select form-select-lg" 
                     formControlName="currency" 
                     [ngClass]="{'is-invalid': (clientForm.get('currency')!.touched || clientForm.get('currency')!.dirty) && !clientForm.get('currency')!.valid}"
                     >
-                    <option [defaultSelected]="true" [value]="editData.currency"> {{editData.currency}} </option>
+                    <option></option>
                     <option *ngFor="let c of formData.currency"> {{ c }} </option>
                     </select>
                     <span class="invalid-feedback"> 
@@ -70,7 +71,7 @@
                     (change)="checkValidity()"
                     [ngClass]="{'is-invalid': (clientForm.get('selectOption')!.touched || clientForm.get('selectOption')!.dirty) && !clientForm.get('selectOption')!.valid}" 
                     >
-                    <option [defaultSelected]="true" [value]="editData.exactPeriod"> {{editData.exactPeriod}} </option>
+                    <option></option>
                     <option *ngFor="let opt of formData.options"> {{opt}} </option>
                     </select>
                     <span class="invalid-feedback"> 
@@ -84,11 +85,12 @@
                     <p class="h6">SELECT YEAR</p>
                     <div class="col">
                         <select 
+                        (change)="checkValidity()"
                         class="form-select form-select-lg" 
                         formControlName="selectYear"
                         [ngClass]="{'is-invalid': (clientForm.get('selectYear')!.touched || clientForm.get('selectYear')!.dirty) && !clientForm.get('selectYear')!.valid}"
                         >
-                        <option [defaultSelected]="true" [value]="editData.taxYear?.year"> {{editData.taxYear?.year}} </option>
+                        <option></option>
                         <option *ngFor="let x of formData.listYear"> Total for {{ x }} Tax Year </option>
                         </select>
                         <span class="invalid-feedback"> 
@@ -104,11 +106,12 @@
                     <p class="h6">SELECT MONTH</p>
                     <div class="col">
                         <select 
+                        (change)="checkValidity()"
                         class="form-select form-select-lg" 
                         formControlName="selectMonth"
                         [ngClass]="{'is-invalid': (clientForm.get('selectMonth')!.touched || clientForm.get('selectMonth')!.dirty) && !clientForm.get('selectMonth')!.valid}"
                         >
-                        <option [defaultSelected]="true" [value]="editData.taxMonth?.month"> {{editData.taxMonth?.month}} </option>
+                        <option></option>
                         <option *ngFor="let x of formData.listMonth"> Total for {{ x }} </option>
                         </select>
                         <span class="invalid-feedback"> 
@@ -128,10 +131,10 @@
                             <select 
                             class="form-select form-select-lg" 
                             formControlName="year"
-                            (change)="getNumberOfDays()"
+                            (click)="getNumberOfDays()"
                             [ngClass]="{'is-invalid': (clientForm.get('year')!.touched || clientForm.get('year')!.dirty) && !clientForm.get('year')!.valid}"
                             >
-                            <option [defaultSelected]="true" [value]="editData.taxDate?.year"> {{editData.taxDate?.year}} </option>
+                            <option></option>
                             <option *ngFor="let x of formData.years"> 20{{ x }} </option>
                             </select>
                             <span class="invalid-feedback"> 
@@ -143,10 +146,10 @@
                             <select 
                             class="form-select form-select-lg" 
                             formControlName="month"
-                            (change)="getNumberOfDays()"
+                            (click)="getNumberOfDays()"
                             [ngClass]="{'is-invalid': (clientForm.get('month')!.touched || clientForm.get('month')!.dirty) && !clientForm.get('month')!.valid}"
                             >
-                            <option [defaultSelected]="true" [value]="editData.taxDate?.month"> {{editData.taxDate?.month}} </option>
+                            <option></option>
                             <option *ngFor="let x of formData.months"> {{ x }} </option>
                             </select>
                             <span class="invalid-feedback"> 
@@ -156,11 +159,11 @@
                         <div class="col">
                             Day
                             <select 
+                            (change)="checkValidity()"
                             class="form-select form-select-lg" 
                             formControlName="day"
                             [ngClass]="{'is-invalid': (clientForm.get('day')!.touched || clientForm.get('day')!.dirty) && !clientForm.get('day')!.valid}"
                             >
-                            <option [defaultSelected]="true" [value]="editData.taxDate?.day"> {{editData.taxDate?.day}} </option>
                             <option *ngFor="let x of numberOfDays"> {{ x }} </option>
                             </select>
                             <span class="invalid-feedback"> 
