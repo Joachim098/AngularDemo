@@ -20,7 +20,7 @@ export class SalaryListComponent implements OnInit {
 
   showDetail(id: number): void{
     if (this.default){
-      this.results = this.data.getTestData(123);
+      this.results = this.data.getTestData();
       this.results.forEach(item => {
         if (id === item.id){
           this.show = !this.show;

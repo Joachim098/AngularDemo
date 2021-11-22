@@ -17,7 +17,7 @@
                     </tr>
                 </thead>
                 <tbody *ngIf="default">
-                    <tr *ngFor="let d of data.getTestData(123)" (click)="showDetail(d.id)">
+                    <tr *ngFor="let d of data.getTestData()" (click)="showDetail(d.id)">
                         <td></td>
                         <td> {{d.id}} </td>
                         <td> {{d.companyName}} </td>

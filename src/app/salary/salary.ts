@@ -12,13 +12,12 @@ export class Salary{
     taxMonth?: YearMonth;
     taxDate?: Dates;
 
-    getTestData(userId: number): Salary[]{
+    getTestData(): Salary[]{
         let result: Salary[] = [];
         let id: number = 1;
         let data = new Salary();
 
         data.id = id;
-        data.userId = userId;
         data.companyName = 'Technology 1';
         data.amount = 200;
         data.currency = 'ZAR';
@@ -30,7 +29,6 @@ export class Salary{
 
         data = new Salary();
         data.id = id;
-        data.userId = userId;
         data.companyName = 'Technology 2';
         data.amount = 200;
         data.currency = 'DKK';
@@ -42,7 +40,6 @@ export class Salary{
 
         data = new Salary();
         data.id = id;
-        data.userId = userId;
         data.companyName = 'Technology 3';
         data.amount = 200;
         data.currency = 'USD';
