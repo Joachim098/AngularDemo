@@ -177,12 +177,11 @@
                         <div class="col">
                             Day
                             <select 
-                            (change)="checkValidity()"
+                            (change)="checkDays()"
                             class="form-select form-select-lg" 
                             formControlName="day"
                             [ngClass]="{'is-invalid': (clientForm.get('day')!.touched || clientForm.get('day')!.dirty) && !clientForm.get('day')!.valid}"
                             >
-                            <option [value]=" "> </option>
                             <option *ngFor="let x of numberOfDays" [value]="x"> {{ x }} </option>
                             </select>
                             <span class="invalid-feedback"> 

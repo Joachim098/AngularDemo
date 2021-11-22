@@ -33,11 +33,11 @@ export class SalaryAddEditComponent implements OnInit {
       amount: [this.editData.amount, [Validators.required, Validators.min(0.01), Validators.max(1000000)]],
       currency:[this.editData.currency, Validators.required],
       selectOption: [this.editData.exactPeriod, Validators.required],
-      selectYear: this.editData.taxYear?.year,
-      selectMonth: this.editData.taxMonth?.month,
-      day: this.editData.taxDate?.day,
-      month: this.editData.taxDate?.month,
-      year: this.editData.taxDate?.year
+      selectYear: this.editData?.taxYear?.year,
+      selectMonth: this.editData?.taxMonth?.month,
+      day: this.editData?.taxDate?.day,
+      month: this.editData?.taxDate?.month,
+      year: this.editData?.taxDate?.year
     });
     this.formData.displayFormInputData();
     if(this.editData.id > 0){
@@ -49,8 +49,12 @@ export class SalaryAddEditComponent implements OnInit {
       this.formLabel = 'ADD SALARY RECORD';
     }
   }
+  checkDays(){
+    if (this.clientForm.get('day')!.value == 'undefined' || this.clientForm.get('day')!.value == 'null'){
+      this.clientForm.get('day')!.setValue('');
+    }
+  }
   getNumberOfDays(): void{
-    this.checkValidity();
     this.clientForm.get('day')!.setValue('');
     this.numberOfDays = [];
     let num: number = 1;
