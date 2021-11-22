@@ -32,12 +32,12 @@ export class SalaryAddEditComponent implements OnInit {
       company: [this.editData.companyName, [Validators.required, Validators.minLength(2), Validators.maxLength(100), Validators.pattern(/^(?!\s).*$/)]],
       amount: [this.editData.amount, [Validators.required, Validators.min(0.01), Validators.max(1000000)]],
       currency:[this.editData.currency, Validators.required],
-      selectOption: ['', Validators.required],
-      selectYear: '',
-      selectMonth: '',
-      day: '',
-      month: '',
-      year: ''
+      selectOption: [this.editData.exactPeriod, Validators.required],
+      selectYear: this.editData.taxYear?.year,
+      selectMonth: this.editData.taxMonth?.month,
+      day: this.editData.taxDate?.day,
+      month: this.editData.taxDate?.month,
+      year: this.editData.taxDate?.year
     });
     this.formData.displayFormInputData();
     if(this.editData.id > 0){
@@ -135,7 +135,7 @@ export class SalaryAddEditComponent implements OnInit {
     }
   }
   checkValidity():void{
-    if(this.clientForm.get('selectOption')!.value.includes('Year')){
+    if(this.clientForm.get('selectOption')!.value == 'Enter for full Tax Year'){
       this.clientForm.get('selectYear')!.setValidators(Validators.required);
       this.clientForm.get('selectMonth')!.removeValidators(Validators.required);
       this.clientForm.get('year')!.removeValidators(Validators.required);
@@ -147,7 +147,7 @@ export class SalaryAddEditComponent implements OnInit {
       this.clientForm.get('month')!.updateValueAndValidity();
       this.clientForm.get('day')!.updateValueAndValidity();
     }
-    if(this.clientForm.get('selectOption')!.value.includes('Month')){
+    if(this.clientForm.get('selectOption')!.value == 'Enter per Month'){
       this.clientForm.get('selectMonth')!.setValidators(Validators.required);
       this.clientForm.get('selectYear')!.removeValidators(Validators.required);
       this.clientForm.get('year')!.removeValidators(Validators.required);
@@ -159,7 +159,7 @@ export class SalaryAddEditComponent implements OnInit {
       this.clientForm.get('month')!.updateValueAndValidity();
       this.clientForm.get('day')!.updateValueAndValidity();
     }
-    if(this.clientForm.get('selectOption')!.value.includes('Date')){
+    if(this.clientForm.get('selectOption')!.value == 'Enter per Specific Date'){
       this.clientForm.get('year')!.setValidators(Validators.required);
       this.clientForm.get('month')!.setValidators(Validators.required);
       this.clientForm.get('day')!.setValidators(Validators.required);
@@ -178,84 +178,91 @@ export class SalaryAddEditComponent implements OnInit {
       return salary;
     return new Salary();
   }
-  addEditRecord(id: string): void{
-    let newData: Salary = new Salary();
-    newData.id = this.editData.id,
-    newData.companyName =this.clientForm.get('company')?.value;
-    newData.amount = this.clientForm.get('amount')?.value;
-    newData.currency = this.clientForm.get('currency')?.value;
-    newData.exactPeriod =this.clientForm.get('selectOption')?.value;
+  addEditRecord(): void{
+    this.clientForm.markAllAsTouched();
+    if(this.clientForm.invalid){
+      return;
+    }
+    else{
+      let newData: Salary = new Salary();
+      newData.id = this.editData.id,
+      newData.companyName =this.clientForm.get('company')?.value;
+      newData.amount = this.clientForm.get('amount')?.value;
+      newData.currency = this.clientForm.get('currency')?.value;
+      newData.exactPeriod =this.clientForm.get('selectOption')?.value;
         
-    if (newData.exactPeriod.includes('Year')){
-      let value = this.clientForm.get('selectYear')!.value;
-      let finalValue = value.substr(10, 9);
-      newData.taxYear = new YearMonth();
-      newData.taxYear.year = finalValue;
-    }
-    if (newData.exactPeriod.includes('Month')){
-      let value = this.clientForm.get('selectMonth')!.value;
-      let finalValue = value.substr(10, 6);
-      newData.taxMonth = new YearMonth();
-      newData.taxMonth.month = finalValue;  
-    }
-    if (newData.exactPeriod.includes('Date')){
-      let day = this.clientForm.get('day')!.value 
-      let month = this.clientForm.get('month')!.value 
-      let year = this.clientForm.get('year')!.value;
-      newData.taxDate = new Dates();
-      newData.taxDate.day = day;
-      newData.taxDate.month = month;
-      newData.taxDate.year = year;  
-    }
-    this.salaryData = this.salaryData.map(u => u.id !== newData.id ? u : newData);
-    alert('Record has been updated!');
-    console.log(this.salaryData); 
+      if (newData.exactPeriod.includes('Year')){
+        let value = this.clientForm.get('selectYear')!.value;
+        newData.taxYear = new YearMonth();
+        newData.taxYear.year = value;
+      }
+      if (newData.exactPeriod.includes('Month')){
+        let value = this.clientForm.get('selectMonth')!.value;
+        newData.taxMonth = new YearMonth();
+        newData.taxMonth.month = value;  
+      }
+      if (newData.exactPeriod.includes('Date')){
+        let day = this.clientForm.get('day')!.value 
+        let month = this.clientForm.get('month')!.value 
+        let year = this.clientForm.get('year')!.value;
+        newData.taxDate = new Dates();
+        newData.taxDate.day = day;
+        newData.taxDate.month = month;
+        newData.taxDate.year = year;  
+      }
+      this.salaryData = this.salaryData.map(u => u.id !== newData.id ? u : newData);
+      alert('Record has been updated!');
+      console.log(this.salaryData);
+    } 
   }
   addNewRecord(): void{
-    let results: Salary[] = [];
-    let record = new Salary();
+    this.clientForm.markAllAsTouched();
+    if(this.clientForm.invalid){
+      return;
+    }
+    else{
+      let results: Salary[] = [];
+      let record = new Salary();
 
-    record.id = this.editData.id;
-    record.companyName = this.clientForm.get('company')?.value;
-    record.amount = this.clientForm.get('amount')?.value;
-    record.currency = this.clientForm.get('currency')?.value;
-    record.exactPeriod = this.clientForm.get('selectOption')?.value;
+      record.id = this.editData.id;
+      record.companyName = this.clientForm.get('company')?.value;
+      record.amount = this.clientForm.get('amount')?.value;
+      record.currency = this.clientForm.get('currency')?.value;
+      record.exactPeriod = this.clientForm.get('selectOption')?.value;
 
-    if (record.exactPeriod.includes('Year')){
-      let value = this.clientForm.get('selectYear')!.value;
-      let finalValue = value.substr(10, 9);
-      record.taxYear = new YearMonth();
-      record.taxYear.year = finalValue;
+      if (record.exactPeriod.includes('Year')){
+        let value = this.clientForm.get('selectYear')!.value;
+        record.taxYear = new YearMonth();
+        record.taxYear.year = value;
+      }
+      if (record.exactPeriod.includes('Month')){
+        let value = this.clientForm.get('selectMonth')!.value;
+        record.taxMonth = new YearMonth();
+        record.taxMonth.month = value;  
+      }
+      if (record.exactPeriod.includes('Date')){
+        let day = this.clientForm.get('day')!.value 
+        let month = this.clientForm.get('month')!.value 
+        let year = this.clientForm.get('year')!.value;
+        record.taxDate = new Dates();
+        record.taxDate.day = day;
+        record.taxDate.month = month;
+        record.taxDate.year = year;  
+      }
+      results.push(record);
+      console.log(results);// testing new added record
+      alert('New Record added!');
     }
-    if (record.exactPeriod.includes('Month')){
-      let value = this.clientForm.get('selectMonth')!.value;
-      let finalValue = value.substr(10, 6);
-      record.taxMonth = new YearMonth();
-      record.taxMonth.month = finalValue;  
-    }
-    if (record.exactPeriod.includes('Date')){
-      let day = this.clientForm.get('day')!.value 
-      let month = this.clientForm.get('month')!.value 
-      let year = this.clientForm.get('year')!.value;
-      record.taxDate = new Dates();
-      record.taxDate.day = day;
-      record.taxDate.month = month;
-      record.taxDate.year = year;  
-    }
-    results.push(record);
-    console.log(results);// testing new added record
-    alert('New Record added!');
   }
   showDate(): void{
     this.show = true;
   }
-
-   saveSalary(): void{
-     if (this.editData.id > 0){
-       return this.addEditRecord(this.editData.id.toString());
-     }
-     else{
-       return this.addNewRecord();
-     }
-   }
+  saveSalary(): void{
+    if (this.editData.id > 0){
+      return this.addEditRecord();
+    }
+    else{
+      return this.addNewRecord();
+    }
+  }
 }
