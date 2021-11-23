@@ -1,0 +1,200 @@
+<div class="container w-50 mt-5">
+    <div class="card">
+        <div class="card-header">
+            {{ formLabel }}
+        </div>
+        <div class="card-body mt-2">
+            <form 
+            novalidate 
+            [formGroup]="clientForm"
+            (ngSubmit)="saveSalary()"
+            >
+            <div class="row">
+                <div class="col">
+                    <p class="h6">COMPANY</p>
+                    <input 
+                    class="form-control form-control-lg" 
+                    type="text"
+                    placeholder="Enter Company Name"
+                    formControlName="company"
+                    [ngClass]="{'is-invalid': (clientForm.get('company')!.touched || clientForm.get('company')!.dirty) && clientForm.get('company')!.invalid}"
+                    >
+                    <span class="invalid-feedback">
+                        <span *ngIf="clientForm.get('company')?.errors?.required"> Please enter Company Name  </span>
+                        <span *ngIf="clientForm.get('company')?.errors?.minlength"> Only a minimum of 2 characters allowed </span>
+                        <span *ngIf="clientForm.get('company')?.errors?.maxlength"> Only a maximum of 100 characters allowed  </span>
+                        <span *ngIf="clientForm.get('company')?.errors?.pattern"> Starting with spaces is not allowed </span>
+                    </span>
+                </div>
+                
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col">
+                    <p class="h6">AMOUNT</p>
+                    <input 
+                    class="form-control form-control-lg" 
+                    type="number" 
+                    placeholder="Enter salary Amount"
+                    formControlName="amount"
+                    [ngClass]="{'is-invalid': (clientForm.get('amount')!.touched || clientForm.get('amount')!.dirty) && !clientForm.get('amount')!.valid}"
+                    >
+                    <span class="invalid-feedback"> 
+                        <span *ngIf="clientForm.get('amount')?.errors?.required"> Please enter salary </span>
+                        <span *ngIf="clientForm.get('amount')?.errors?.min"> Minimum salary should be at least 0.01</span>
+                        <span *ngIf="clientForm.get('amount')?.errors?.max"> Maximum salary should be up to 1000000 </span>
+                    </span>
+                </div>
+                <div class="col">
+                    <p class="h6">CURRENCY</p>
+                    <select
+                    (change)="checkValidity()" 
+                    class="form-select form-select-lg" 
+                    formControlName="currency" 
+                    [ngClass]="{'is-invalid': (clientForm.get('currency')!.touched || clientForm.get('currency')!.dirty) && !clientForm.get('currency')!.valid}"
+                    >
+                    <option *ngFor="let c of formData.currency" [value]="c"> {{ c }} </option>
+                    </select>
+                    <span class="invalid-feedback"> 
+                        <span *ngIf="clientForm.get('currency')?.errors?.required"> Please select a currency </span>
+                    </span>
+                </div>
+            </div>
+            <br/>
+            <div class="row" *ngIf="editData.id>0 && !show">
+                <div class="col">
+                    <p class="h6"> TAX PERIOD </p>
+                    <input  
+                    class="form-control form-control-lg" 
+                    type="text" [value]="editData.exactPeriod"
+                    readonly>
+                    <br/>
+                    <button class="btn btn-primary" (click)="showDate()"> Change Date </button>
+                </div>
+                <div class="col">
+                    <p class="h6"> DATE </p>
+                    <input  
+                    class="form-control form-control-lg" 
+                    type="text" [value]="editData | datePipe"
+                    readonly>
+                </div>
+            </div>
+            <br/>
+            <div class="row" *ngIf="show || !editData.id">
+                <div class="col">
+                    <p class="h6">DATE PAID</p>
+                    <select 
+                    class="form-select form-select-lg" 
+                    formControlName="selectOption"
+                    (change)="checkValidity()"
+                    [ngClass]="{'is-invalid': (clientForm.get('selectOption')!.touched || clientForm.get('selectOption')!.dirty) && !clientForm.get('selectOption')!.valid}" 
+                    >
+                    <option *ngFor="let opt of formData.options" [value]="opt"> {{opt}} </option>
+                    </select>
+                    <span class="invalid-feedback"> 
+                        <span *ngIf="clientForm.get('selectOption')?.errors?.required"> Please enter the tax period </span>
+                    </span>
+                    <br/>
+                </div>
+            </div>
+            <br/>
+            <div class="row mt-2" *ngIf="clientForm.get('selectOption')!.value == 'Enter for full Tax Year'">
+                <div class="col">
+                    <p class="h6">SELECT YEAR</p>
+                    <div class="col">
+                        <select 
+                        (change)="checkValidity()"
+                        class="form-select form-select-lg" 
+                        formControlName="selectYear"
+                        [ngClass]="{'is-invalid': (clientForm.get('selectYear')!.touched || clientForm.get('selectYear')!.dirty) && !clientForm.get('selectYear')!.valid}"
+                        >
+                        <option [value]=" "> </option>
+                        <option *ngFor="let y of formData.listYear" [value]="y"> Total for {{ y }} Tax Year </option>
+                        </select>
+                        <span class="invalid-feedback"> 
+                            <span *ngIf="clientForm.get('selectYear')?.errors?.required"> Please enter the tax Year </span>
+                        </span>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row month" *ngIf="clientForm.get('selectOption')!.value == 'Enter per Month'">
+                <div class="col">
+                    <p class="h6">SELECT MONTH</p>
+                    <div class="col">
+                        <select 
+                        (change)="checkValidity()"
+                        class="form-select form-select-lg" 
+                        formControlName="selectMonth"
+                        [ngClass]="{'is-invalid': (clientForm.get('selectMonth')!.touched || clientForm.get('selectMonth')!.dirty) && !clientForm.get('selectMonth')!.valid}"
+                        >
+                        <option [value]=" "> </option>
+                        <option *ngFor="let m of formData.listMonth" [value]="m"> Total for {{ m }} </option>
+                        </select>
+                        <span class="invalid-feedback"> 
+                            <span *ngIf="clientForm.get('selectMonth')?.errors?.required"> Please enter the tax Month </span>
+                        </span>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div class="row date" *ngIf="clientForm.get('selectOption')!.value == 'Enter per Specific Date'">
+                <div class="col">
+                    <p class="h6">SELECT DATE </p>
+                    <div class="row">
+                        <div class="col">
+                            Year
+                            <select 
+                            class="form-select form-select-lg" 
+                            formControlName="year"
+                            (change)="getNumberOfDays()"
+                            [ngClass]="{'is-invalid': (clientForm.get('year')!.touched || clientForm.get('year')!.dirty) && !clientForm.get('year')!.valid}"
+                            >
+                            <option [value]=" "> </option>
+                            <option *ngFor="let x of formData.years" [value]="x"> 20{{ x }} </option>
+                            </select>
+                            <span class="invalid-feedback"> 
+                                <span *ngIf="clientForm.get('year')?.errors?.required"> Please enter the year </span>
+                            </span>
+                        </div>
+                        <div class="col">
+                            Month
+                            <select 
+                            class="form-select form-select-lg" 
+                            formControlName="month"
+                            (change)="getNumberOfDays()"
+                            [ngClass]="{'is-invalid': (clientForm.get('month')!.touched || clientForm.get('month')!.dirty) && !clientForm.get('month')!.valid}"
+                            >
+                            <option [value]=" "> </option>
+                            <option *ngFor="let x of formData.months" [value]="x"> {{ x }} </option>
+                            </select>
+                            <span class="invalid-feedback"> 
+                                <span *ngIf="clientForm.get('month')?.errors?.required"> Please enter the month </span>
+                            </span>
+                        </div>
+                        <div class="col">
+                            Day
+                            <select 
+                            (change)="checkDays()"
+                            class="form-select form-select-lg" 
+                            formControlName="day"
+                            [ngClass]="{'is-invalid': (clientForm.get('day')!.touched || clientForm.get('day')!.dirty) && !clientForm.get('day')!.valid}"
+                            >
+                            <option *ngFor="let x of numberOfDays" [value]="x"> {{ x }} </option>
+                            </select>
+                            <span class="invalid-feedback"> 
+                                <span *ngIf="clientForm.get('day')?.errors?.required"> Please enter the day </span>
+                            </span>
+                        </div>
+                        <br/>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <button class="btn btn-primary" type="submit"> {{ btnLabel }} </button>
+            </form>
+        </div>
+    </div>
+</div>
