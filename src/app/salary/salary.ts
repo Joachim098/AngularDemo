@@ -18,7 +18,7 @@ export class Salary{
         let data = new Salary();
 
         data.id = id;
-        data.companyName = 'Technology 1';
+        data.companyName = 'Company 1';
         data.amount = 200;
         data.currency = 'ZAR';
         data.exactPeriod = 'Tax per Year';
@@ -29,7 +29,7 @@ export class Salary{
 
         data = new Salary();
         data.id = id;
-        data.companyName = 'Technology 2';
+        data.companyName = 'Company 2';
         data.amount = 200;
         data.currency = 'DKK';
         data.exactPeriod = 'Tax per Month';
@@ -40,7 +40,7 @@ export class Salary{
 
         data = new Salary();
         data.id = id;
-        data.companyName = 'Technology 3';
+        data.companyName = 'Company 3';
         data.amount = 200;
         data.currency = 'USD';
         data.exactPeriod = 'Tax per Specific Date';

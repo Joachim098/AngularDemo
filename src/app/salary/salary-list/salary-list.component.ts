@@ -13,11 +13,36 @@ export class SalaryListComponent implements OnInit {
   results: Salary[] = [];
   deletedRecords: Salary[];
   salary: Salary = new Salary();
+  filteredResults: Salary[] = [];
+
+  private _listSearch: string = '';
+  selectedFilter: string = '';
+
+  get listSearch(): string{
+    return this._listSearch;
+  }
+  set listSearch(value: string){
+    this._listSearch = value;
+    this.filteredResults = this.performSearch(value); 
+  }
 
   constructor() { 
     this.data = new Salary();
   }
 
+  performSearch(value: string): Salary[] {
+    value = value.toLowerCase();
+    return this.data.getTestData(123).filter((salary: Salary) => salary.companyName.toLowerCase().includes(value));  
+  }
+  performFilter(value: string): Salary[] {
+    return this.data.getTestData(123).filter((salary: Salary) => salary.exactPeriod.includes(value) && salary.companyName.toLocaleLowerCase().includes(this.listSearch)); 
+  }
+  getFilteredSalary(): void{
+    this.filteredResults = this.performFilter(this.selectedFilter);
+  }
+  clearFilter(){
+    this.selectedFilter = '';
+  }
   showDetail(id: number): void{
     if (this.default){
       this.results = this.data.getTestData();
@@ -70,7 +95,9 @@ export class SalaryListComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
+    this.data.getTestData(123);
+    this.listSearch = 'company';
   }
 
 }
