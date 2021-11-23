@@ -18,36 +18,36 @@ export class SalaryListComponent implements OnInit {
   private _listSearch: string = '';
   selectedFilter: string = '';
 
-  get listSearch(): string{
+  get listSearch(): string {
     return this._listSearch;
   }
-  set listSearch(value: string){
+  set listSearch(value: string) {
     this._listSearch = value;
-    this.filteredResults = this.performSearch(value); 
+    this.filteredResults = this.performSearch(value);
   }
 
-  constructor() { 
+  constructor() {
     this.data = new Salary();
   }
 
   performSearch(value: string): Salary[] {
     value = value.toLowerCase();
-    return this.data.getTestData(123).filter((salary: Salary) => salary.companyName.toLowerCase().includes(value));  
+    return this.data.getTestData().filter((salary: Salary) => salary.companyName.toLowerCase().includes(value));
   }
   performFilter(value: string): Salary[] {
-    return this.data.getTestData(123).filter((salary: Salary) => salary.exactPeriod.includes(value) && salary.companyName.toLocaleLowerCase().includes(this.listSearch)); 
+    return this.data.getTestData().filter((salary: Salary) => salary.exactPeriod.includes(value) && salary.companyName.toLocaleLowerCase().includes(this.listSearch));
   }
-  getFilteredSalary(): void{
+  getFilteredSalary(): void {
     this.filteredResults = this.performFilter(this.selectedFilter);
   }
-  clearFilter(){
+  clearFilter() {
     this.selectedFilter = '';
   }
-  showDetail(id: number): void{
-    if (this.default){
+  showDetail(id: number): void {
+    if (this.default) {
       this.results = this.data.getTestData();
       this.results.forEach(item => {
-        if (id === item.id){
+        if (id === item.id) {
           this.show = !this.show;
           this.salary.id = item.id;
           this.salary.userId = item.userId;
@@ -61,9 +61,9 @@ export class SalaryListComponent implements OnInit {
         }
       })
     }
-    else if (!this.default){
+    else if (!this.default) {
       this.results.forEach(item => {
-        if (id === item.id){
+        if (id === item.id) {
           this.show = !this.show;
           this.salary.id = item.id;
           this.salary.userId = item.userId;
@@ -78,25 +78,25 @@ export class SalaryListComponent implements OnInit {
       })
 
     }
-    
+
   }
-  deleteRecord(value: string): void{
-    if (confirm('Are you sure you want to delete this record?')){
+  deleteRecord(value: string): void {
+    if (confirm('Are you sure you want to delete this record?')) {
       this.show = !this.show;
       this.default = false;
-      for (let i: number = 0; i<this.results.length; i++){
-        if (this.results[i].id == parseInt(value)){
+      for (let i: number = 0; i < this.results.length; i++) {
+        if (this.results[i].id == parseInt(value)) {
           this.results.splice(i, 1);
-          this.deletedRecords = []; 
+          this.deletedRecords = [];
           this.deletedRecords = this.results;
         }
-      }  
-      console.log(this.deletedRecords); 
+      }
+      console.log(this.deletedRecords);
     }
   }
 
-  ngOnInit(): void { 
-    this.data.getTestData(123);
+  ngOnInit(): void {
+    this.data.getTestData();
     this.listSearch = 'company';
   }
 
