@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TaxComponent } from './tax.component';
+import { SalaryAddEditComponent } from './salary-add-edit/salary-add-edit.component';
 import { SalaryListComponent } from './salary-list/salary-list.component';
 import { SalaryDetailComponent } from './salary-detail/salary-detail.component';
 import { RouterModule } from '@angular/router';
@@ -11,7 +11,7 @@ import { DatePipePipe } from '../pipes/date-pipe.pipe';
 
 @NgModule({
   declarations: [
-    TaxComponent,
+    SalaryAddEditComponent,
     SalaryListComponent,
     SalaryDetailComponent,
     DatePipePipe
@@ -21,9 +21,10 @@ import { DatePipePipe } from '../pipes/date-pipe.pipe';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forChild([
-      {path: 'salary-record', component: TaxComponent},
+      {path: 'salary-record/:id', component: SalaryAddEditComponent},
       {path: 'salary-list', component: SalaryListComponent},
-      {path: '', redirectTo: 'salary-record', pathMatch: 'full'}
+      {path: '', redirectTo: 'salary-record/0', pathMatch: 'full'},
+      {path: '**', redirectTo: 'salary-record/0', pathMatch: 'full'}
     ])
   ],
   exports: []

@@ -1,0 +1,6 @@
+.table tbody{
+    cursor: pointer;
+}
+.table tbody :hover{
+    background-color: lightgray;
+}

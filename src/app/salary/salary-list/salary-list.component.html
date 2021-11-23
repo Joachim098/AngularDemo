@@ -26,6 +26,7 @@
             <table class="table mt-2">
                 <thead class="text-primary">
                     <tr>
+                        <th> <button class="btn btn-primary" [routerLink]="['/salary-record', 0]"> Create New </button> </th>
                         <th>Record Id</th>
                         <th>Company Name</th>
                         <th>Amount</th>
@@ -34,18 +35,9 @@
                         <th>Date</th>
                     </tr>
                 </thead>
-                <tbody *ngIf="!default">
-                        <tr *ngFor="let d of results" (click)="showDetail(d.id)">
-                            <td> {{d.id}} </td>
-                            <td> {{d.companyName}} </td>
-                            <td> {{d.amount | currency: d.currency: 'symbol-narrow': '1.2-2'}} </td>
-                            <td> {{d.currency}} </td>
-                            <td> {{d.exactPeriod}} </td>
-                            <td> {{d | datePipe}} </td>
-                        </tr> 
-                </tbody>    
                 <tbody *ngIf="default">
                     <tr *ngFor="let d of filteredResults" (click)="showDetail(d.id)">
+                        <td></td>
                         <td> {{d.id}} </td>
                         <td> {{d.companyName}} </td>
                         <td> {{d.amount | currency: d.currency: 'symbol-narrow': '1.2-2'}} </td>
@@ -53,7 +45,18 @@
                         <td> {{d.exactPeriod}} </td>
                         <td> {{d | datePipe}} </td>
                     </tr> 
-                </tbody>          
+                </tbody>
+                <tbody *ngIf="!default">
+                    <tr *ngFor="let d of results" (click)="showDetail(d.id)">
+                        <td></td>
+                        <td> {{d.id}} </td>
+                        <td> {{d.companyName}} </td>
+                        <td> {{d.amount | currency: d.currency: 'symbol-narrow': '1.2-2'}} </td>
+                        <td> {{d.currency}} </td>
+                        <td> {{d.exactPeriod}} </td>
+                        <td> {{d | datePipe}} </td>
+                    </tr> 
+                </tbody>      
             </table>
             <app-salary-detail *ngIf="show" 
                                 [salary]="salary"
