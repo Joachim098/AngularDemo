@@ -61,7 +61,7 @@
                 </div>
             </div>
             <br/>
-            <div class="row" *ngIf="editData.id>0 && !show">
+            <div class="row" *ngIf="routerId > 0 && !show">
                 <div class="col">
                     <p class="h6"> TAX PERIOD </p>
                     <input  
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <br/>
-            <div class="row" *ngIf="show || !editData.id">
+            <div class="row" *ngIf="show || routerId == 0">
                 <div class="col">
                     <p class="h6">DATE PAID</p>
                     <select 

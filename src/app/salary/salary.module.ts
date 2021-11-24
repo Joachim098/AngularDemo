@@ -1,3 +1,5 @@
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { SalaryData } from './salary-data';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +10,6 @@ import { SalaryDetailComponent } from './salary-detail/salary-detail.component';
 import { RouterModule } from '@angular/router';
 import { DatePipePipe } from '../pipes/date-pipe.pipe';
 
-
 @NgModule({
   declarations: [
     SalaryAddEditComponent,
@@ -17,6 +18,7 @@ import { DatePipePipe } from '../pipes/date-pipe.pipe';
     DatePipePipe
   ],
   imports: [
+    InMemoryWebApiModule.forRoot(SalaryData),
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
