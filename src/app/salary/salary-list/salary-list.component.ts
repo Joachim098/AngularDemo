@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Salary } from '../salary';
+import { SalaryService } from '../salary.service';
 
 @Component({
   selector: 'app-salary-list',
@@ -26,16 +27,27 @@ export class SalaryListComponent implements OnInit {
     this.filteredResults = this.performSearch(value);
   }
 
-  constructor() {
-    this.data = new Salary();
-  }
+  constructor(private salaryService: SalaryService) {}
 
+  ngOnInit(): void {
+    this.salaryService.getSalaries().subscribe({
+      next: salary => {
+        this.filteredResults = salary;
+        this.results = this.filteredResults;
+      },
+      error: err => {
+        console.log(err);
+      }
+    });
+  }
   performSearch(value: string): Salary[] {
     value = value.toLowerCase();
-    return this.data.getTestData().filter((salary: Salary) => salary.companyName.toLowerCase().includes(value));
+    return this.filteredResults.filter((salary: Salary) => salary.companyName.toLowerCase().includes(value)) 
+    && this.results.filter((salary: Salary) => salary.companyName.toLowerCase().includes(value));
   }
   performFilter(value: string): Salary[] {
-    return this.data.getTestData().filter((salary: Salary) => salary.exactPeriod.includes(value) && salary.companyName.toLocaleLowerCase().includes(this.listSearch));
+    return this.filteredResults.filter((salary: Salary) => salary.exactPeriod.includes(value) && salary.companyName.toLocaleLowerCase().includes(this.listSearch)) 
+    && this.results.filter((salary: Salary) => salary.exactPeriod.includes(value) && salary.companyName.toLocaleLowerCase().includes(this.listSearch));
   }
   getFilteredSalary(): void {
     this.filteredResults = this.performFilter(this.selectedFilter);
@@ -45,40 +57,43 @@ export class SalaryListComponent implements OnInit {
   }
   showDetail(id: number): void {
     if (this.default) {
-      this.results = this.data.getTestData();
-      this.results.forEach(item => {
-        if (id === item.id) {
+      this.salaryService.getSalary(id).subscribe({
+        next: salary => {
           this.show = !this.show;
-          this.salary.id = item.id;
-          this.salary.userId = item.userId;
-          this.salary.companyName = item.companyName;
-          this.salary.amount = item.amount;
-          this.salary.currency = item.currency;
-          this.salary.exactPeriod = item.exactPeriod;
-          this.salary.taxDate = item.taxDate;
-          this.salary.taxMonth = item.taxMonth;
-          this.salary.taxYear = item.taxYear;
+          this.salary.id = salary.id;
+          this.salary.companyName = salary.companyName;
+          this.salary.amount = salary.amount;
+          this.salary.currency = salary.currency;
+          this.salary.exactPeriod = salary.exactPeriod;
+          this.salary.taxDate = salary.taxDate;
+          this.salary.taxMonth = salary.taxMonth;
+          this.salary.taxYear = salary.taxYear;
+        },
+        error: err => {
+          console.log(err);
         }
-      })
+      });
+      
     }
     else if (!this.default) {
-      this.results.forEach(item => {
-        if (id === item.id) {
+      this.salaryService.getSalary(id).subscribe({
+        next: salary => {
           this.show = !this.show;
-          this.salary.id = item.id;
-          this.salary.userId = item.userId;
-          this.salary.companyName = item.companyName;
-          this.salary.amount = item.amount;
-          this.salary.currency = item.currency;
-          this.salary.exactPeriod = item.exactPeriod;
-          this.salary.taxDate = item.taxDate;
-          this.salary.taxMonth = item.taxMonth;
-          this.salary.taxYear = item.taxYear;
+          this.salary.id = salary.id;
+          this.salary.companyName = salary.companyName;
+          this.salary.amount = salary.amount;
+          this.salary.currency = salary.currency;
+          this.salary.exactPeriod = salary.exactPeriod;
+          this.salary.taxDate = salary.taxDate;
+          this.salary.taxMonth = salary.taxMonth;
+          this.salary.taxYear = salary.taxYear;
+        },
+        error: err => {
+          console.log(err);
         }
-      })
+      });
 
     }
-
   }
   deleteRecord(value: string): void {
     if (confirm('Are you sure you want to delete this record?')) {
@@ -86,18 +101,12 @@ export class SalaryListComponent implements OnInit {
       this.default = false;
       for (let i: number = 0; i < this.results.length; i++) {
         if (this.results[i].id == parseInt(value)) {
-          this.results.splice(i, 1);
-          this.deletedRecords = [];
-          this.deletedRecords = this.results;
+          this.salaryService.deleteSalary(this.results[i].id).subscribe({
+            next: () => this.results.splice(i, 1),
+            error: err => console.log(err)
+          });
         }
       }
-      console.log(this.deletedRecords);
     }
   }
-
-  ngOnInit(): void {
-    this.data.getTestData();
-    this.listSearch = 'company';
-  }
-
 }

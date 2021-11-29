@@ -11,12 +11,10 @@ export class SalaryDetailComponent implements OnInit {
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
   
   constructor() { }
+  
+  ngOnInit(): void {}
 
   deletedChild(): void{
     this.notify.emit(this.salary.id.toString());
   }
-
-  ngOnInit(): void {
-  }
-
 }
