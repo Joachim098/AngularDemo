@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
-import { tap, catchError, map } from "rxjs/operators";
+import { tap, catchError, map, delay } from "rxjs/operators";
 import { Salary } from "./salary";
 
 @Injectable({
@@ -14,7 +14,9 @@ export class SalaryService{
     private salaryUrl = 'api/salary';
 
     getSalaries(): Observable<Salary[]>{
-        return this.http.get<Salary[]>(this.salaryUrl);
+        return this.http.get<Salary[]>(this.salaryUrl).pipe(
+            delay(2000)
+        );
     }
     getSalary(id: number) : Observable<Salary>{
         if (id === 0){
@@ -22,6 +24,7 @@ export class SalaryService{
         }
         const url = `${this.salaryUrl}/${id}`
         return this.http.get<Salary>(url).pipe(
+            delay(2000),
             tap(data => console.log('getSalary: ' + JSON.stringify(data))),
             catchError(this.handleError)
         );
@@ -30,6 +33,7 @@ export class SalaryService{
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         const url = `${this.salaryUrl}`
         return this.http.post<Salary>(url, salary, { headers }).pipe(
+            delay(2000),
             tap((data) => console.log('New Salary: ' + JSON.stringify(data))),
             map(() => salary),
             catchError(this.handleError)
@@ -39,6 +43,7 @@ export class SalaryService{
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         const url = `${this.salaryUrl}/${salary.id}`
         return this.http.put<Salary>(url, salary, { headers }).pipe(
+            delay(2000),
             tap(() => console.log('Updated Salary: ' + salary)),
             map(() => salary),
             catchError(this.handleError)
@@ -48,6 +53,7 @@ export class SalaryService{
         const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
         const url = `${this.salaryUrl}/${id}`;
         return this.http.delete<Salary>(url, { headers }).pipe(
+            delay(2000),
             tap(() => console.log('Deleted Salary Id: ' + id)),
             catchError(this.handleError)
         );

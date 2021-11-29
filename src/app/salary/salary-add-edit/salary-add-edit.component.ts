@@ -21,8 +21,9 @@ export class SalaryAddEditComponent implements OnInit {
   routerId: number = +this.router.snapshot.paramMap.get('id')!;
   editData: Salary;
   salary: Salary = new Salary();
-  //salaryData: Salary[] = this.salary.getTestData();
   show: Boolean = false;
+  isLoading: Boolean;
+  alertMessage: String;
 
   constructor(private fb: FormBuilder, private router: ActivatedRoute, private route: Router, private salaryService: SalaryService) {
     this.formData = new FormData();
@@ -49,7 +50,6 @@ export class SalaryAddEditComponent implements OnInit {
     }
   }
   getNumberOfDays(): void{
-    //alert(this.clientForm.get('year')!.value)
     this.clientForm.get('day')!.setValue('');
     this.numberOfDays = [];
     let num: number = 1;
@@ -172,8 +172,10 @@ export class SalaryAddEditComponent implements OnInit {
     }
   }
   getEditRecord(id: number): void{
+    this.isLoading = true;
     this.salaryService.getSalary(id).subscribe({
       next: salary => {
+        this.isLoading = false;
         this.editData = {...salary};
         if(this.editData.id > 0){
 
@@ -239,11 +241,12 @@ export class SalaryAddEditComponent implements OnInit {
         newData.taxDate.month = month;
         newData.taxDate.year = year;  
       }
+      this.isLoading = true;
       this.salaryService.updateSalary(newData).subscribe({
         next: () => {
           this.clientForm.reset();
-          alert('Record has been updated!');
-          this.route.navigate(['/salary-list']);
+          this.isLoading = false;
+          this.alertMessage = 'Recod Id ' + newData.id + ' has been updated!';
         },
         error: err => console.log(err)
       });
@@ -283,11 +286,12 @@ export class SalaryAddEditComponent implements OnInit {
         record.taxDate.month = month;
         record.taxDate.year = year;  
       }
+      this.isLoading = true;
       this.salaryService.createSalary(record).subscribe({
         next: () => {
           this.clientForm.reset();
-          alert('New Record has been added!');
-          this.route.navigate(['/salary-list']);
+          this.isLoading = false;
+          this.alertMessage = 'New Record has been added!';
         },
         error: err => console.log(err)
       });

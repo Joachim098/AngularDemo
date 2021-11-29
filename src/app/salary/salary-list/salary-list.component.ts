@@ -10,6 +10,8 @@ import { SalaryService } from '../salary.service';
 export class SalaryListComponent implements OnInit {
   show: Boolean = false;
   default: Boolean = true;
+  isLoading: Boolean = true;
+  alertMessage: String = '';
   data: Salary;
   results: Salary[] = [];
   deletedRecords: Salary[];
@@ -32,6 +34,7 @@ export class SalaryListComponent implements OnInit {
   ngOnInit(): void {
     this.salaryService.getSalaries().subscribe({
       next: salary => {
+        this.isLoading = false;
         this.filteredResults = salary;
         this.results = this.filteredResults;
       },
@@ -56,9 +59,11 @@ export class SalaryListComponent implements OnInit {
     this.selectedFilter = '';
   }
   showDetail(id: number): void {
+    this.isLoading = true;
     if (this.default) {
       this.salaryService.getSalary(id).subscribe({
         next: salary => {
+          this.isLoading = false;
           this.show = !this.show;
           this.salary.id = salary.id;
           this.salary.companyName = salary.companyName;
@@ -72,12 +77,13 @@ export class SalaryListComponent implements OnInit {
         error: err => {
           console.log(err);
         }
-      });
-      
+      }); 
     }
     else if (!this.default) {
+      this.isLoading = true;
       this.salaryService.getSalary(id).subscribe({
         next: salary => {
+          this.isLoading = false;
           this.show = !this.show;
           this.salary.id = salary.id;
           this.salary.companyName = salary.companyName;
@@ -92,21 +98,23 @@ export class SalaryListComponent implements OnInit {
           console.log(err);
         }
       });
-
     }
   }
   deleteRecord(value: string): void {
-    if (confirm('Are you sure you want to delete this record?')) {
+    this.isLoading = true;
       this.show = !this.show;
       this.default = false;
       for (let i: number = 0; i < this.results.length; i++) {
         if (this.results[i].id == parseInt(value)) {
           this.salaryService.deleteSalary(this.results[i].id).subscribe({
-            next: () => this.results.splice(i, 1),
+            next: () => {
+              this.isLoading = false;
+              this.alertMessage = 'Record Id: ' + value + ' has been deleted';
+              this.results.splice(i, 1);
+            },
             error: err => console.log(err)
           });
         }
       }
     }
-  }
 }

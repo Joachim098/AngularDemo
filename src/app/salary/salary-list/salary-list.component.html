@@ -1,28 +1,40 @@
-<div class="container mt-5" [style.width.cm]="'25'">
+<div class="container" [style.width.cm]="'5'" *ngIf="isLoading">
+    <app-loader></app-loader>
+</div>
+
+<div class="container mt-5" [style.width.cm]="'25'" *ngIf="!isLoading">
+    <div class="row mb-4">
+        <div class="col-5">
+            Search
+            <input 
+            class="form-control form-control-md" 
+            type="text" 
+            [(ngModel)]="listSearch" 
+            (change)="clearFilter()"
+            placeholder="Search by company...">
+        </div>
+        <div class="col-4">
+            Filter by:
+            <select [(ngModel)]="selectedFilter" (change)="getFilteredSalary()" class="form-select form-select-md">
+                <option> Year </option>
+                <option> Month </option>
+                <option> Specific Date </option>
+            </select>    
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="alertMessage">
+            <div class="alert alert-primary alert-dismissible fade show" role="alert" style="color: red;">
+                {{ alertMessage }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+    </div> 
     <div class="card">
         <div class="card-header">
             SALARY LIST
         </div>
         <div class="card-body">
-            <div class="row mb-4">
-                <div class="col-5">
-                    Search
-                    <input 
-                    class="form-control form-control-md" 
-                    type="text" 
-                    [(ngModel)]="listSearch" 
-                    (change)="clearFilter()"
-                    placeholder="Search by company...">
-                </div>
-                <div class="col-4">
-                    Filter by:
-                    <select [(ngModel)]="selectedFilter" (change)="getFilteredSalary()" class="form-select form-select-md">
-                        <option> Year </option>
-                        <option> Month </option>
-                        <option> Specific Date </option>
-                    </select>    
-                </div>
-            </div> 
             <table class="table mt-2">
                 <thead class="text-primary">
                     <tr>

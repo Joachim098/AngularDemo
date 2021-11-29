@@ -9,13 +9,15 @@ import { SalaryListComponent } from './salary-list/salary-list.component';
 import { SalaryDetailComponent } from './salary-detail/salary-detail.component';
 import { RouterModule } from '@angular/router';
 import { DatePipePipe } from '../pipes/date-pipe.pipe';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
     SalaryAddEditComponent,
     SalaryListComponent,
     SalaryDetailComponent,
-    DatePipePipe
+    DatePipePipe,
+    LoaderComponent
   ],
   imports: [
     InMemoryWebApiModule.forRoot(SalaryData),
