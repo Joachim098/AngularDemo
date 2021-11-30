@@ -4,11 +4,19 @@
 
 <div class="container w-50 mt-5" *ngIf="!isLoading">
     <div class="row">
-        <div *ngIf="alertMessage">
-            <div class="alert alert-primary alert-dismissible fade show"  role="alert" style="text-align: end; color: red;">
-                {{ alertMessage }}
+        <div *ngIf="successMessage">
+            <div class="alert alert-success alert-dismissible fade show"  role="alert" style="text-align: end;">
+                {{ successMessage }}
                 <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Close"></button>
-                <button class="btn btn-primary" style="margin-left: 1cm;" [routerLink]="['/salary-list']"> View </button>
+                <button class="btn btn-success" style="margin-left: 1cm;" [routerLink]="['/salary-list']"> View List </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div *ngIf="errorMessage">
+            <div class="alert alert-danger alert-dismissible fade show"  role="alert" style="text-align: end;">
+                {{ errorMessage }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
     </div>

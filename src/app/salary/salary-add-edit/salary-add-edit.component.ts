@@ -23,7 +23,8 @@ export class SalaryAddEditComponent implements OnInit {
   salary: Salary = new Salary();
   show: Boolean = false;
   isLoading: Boolean;
-  alertMessage: String;
+  successMessage: String;
+  errorMessage: string;
 
   constructor(private fb: FormBuilder, private router: ActivatedRoute, private route: Router, private salaryService: SalaryService) {
     this.formData = new FormData();
@@ -175,10 +176,8 @@ export class SalaryAddEditComponent implements OnInit {
     this.isLoading = true;
     this.salaryService.getSalary(id).subscribe({
       next: salary => {
-        this.isLoading = false;
         this.editData = {...salary};
         if(this.editData.id > 0){
-
           this.btnLabel = 'Update Record';
           this.formLabel = 'EDIT SALARY RECORD';
           this.clientForm.get('company')!.setValue(this.editData.companyName);
@@ -202,8 +201,13 @@ export class SalaryAddEditComponent implements OnInit {
           this.btnLabel = 'Add New Record'
           this.formLabel = 'ADD SALARY RECORD';
         }
+        this.isLoading = false;
       },
-      error: err => console.log(err)
+      error: err => {
+        console.log(err);
+        this.errorMessage = err;
+        this.isLoading = false;
+      }
     });
   }
   addEditRecord(): void{
@@ -244,11 +248,14 @@ export class SalaryAddEditComponent implements OnInit {
       this.isLoading = true;
       this.salaryService.updateSalary(newData).subscribe({
         next: () => {
-          this.clientForm.reset();
+          this.successMessage = 'Recod has been updated!';
           this.isLoading = false;
-          this.alertMessage = 'Recod Id ' + newData.id + ' has been updated!';
         },
-        error: err => console.log(err)
+        error: err => {
+          console.log(err);
+          this.errorMessage = err;
+          this.isLoading = false;
+        }
       });
     } 
   }
@@ -290,10 +297,14 @@ export class SalaryAddEditComponent implements OnInit {
       this.salaryService.createSalary(record).subscribe({
         next: () => {
           this.clientForm.reset();
+          this.successMessage = 'New Record has been added!';
           this.isLoading = false;
-          this.alertMessage = 'New Record has been added!';
         },
-        error: err => console.log(err)
+        error: err => {
+          console.log(err);
+          this.errorMessage = err;
+          this.isLoading = false;
+        }
       });
     }
   }

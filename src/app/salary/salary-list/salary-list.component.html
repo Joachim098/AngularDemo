@@ -10,7 +10,6 @@
             class="form-control form-control-md" 
             type="text" 
             [(ngModel)]="listSearch" 
-            (change)="clearFilter()"
             placeholder="Search by company...">
         </div>
         <div class="col-4">
@@ -23,9 +22,15 @@
         </div>
     </div>
     <div class="row">
-        <div *ngIf="alertMessage">
-            <div class="alert alert-primary alert-dismissible fade show" role="alert" style="color: red;">
-                {{ alertMessage }}
+        <div *ngIf="successMessage">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ successMessage }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        </div>
+        <div *ngIf="errorMessage">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                {{ errorMessage }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         </div>
