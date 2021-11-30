@@ -248,7 +248,7 @@ export class SalaryAddEditComponent implements OnInit {
       this.isLoading = true;
       this.salaryService.updateSalary(newData).subscribe({
         next: () => {
-          this.successMessage = 'Recod has been updated!';
+          this.successMessage = 'Record has been updated!';
           this.isLoading = false;
         },
         error: err => {
