@@ -42,6 +42,7 @@ export class SalaryListComponent implements OnInit {
       },
       error: err => {
         console.log(err);
+        this.errorMessage = err;
         this.isLoading = false;
       }
     });
@@ -77,8 +78,7 @@ export class SalaryListComponent implements OnInit {
     }
   }
   deleteRecord(value: string): void {
-    if(confirm('Are you sure you want to delete this record?')){
-      this.isLoading = true;
+    this.isLoading = true;
       this.show = !this.show;
       this.default = false;
       for (let i: number = 0; i < this.results.length; i++) {
@@ -97,6 +97,5 @@ export class SalaryListComponent implements OnInit {
           });
         }
       }
-    }
   }
 }
