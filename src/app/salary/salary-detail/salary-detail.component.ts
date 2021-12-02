@@ -9,12 +9,24 @@ import { Salary } from '../salary';
 export class SalaryDetailComponent implements OnInit {
   @Input() salary: Salary = new Salary(); 
   @Output() notify: EventEmitter<string> = new EventEmitter<string>();
+  showDelete: Boolean;
+  showButtons: Boolean = true;
   
   constructor() { }
   
   ngOnInit(): void {}
 
+  confirmDelete(){
+    this.showDelete = true;
+    this.showButtons = false;
+  }
+  cancelDelete(){
+    this.showButtons = true;
+    this.showDelete = false;
+  }
   deletedChild(): void{
-    this.notify.emit(this.salary.id.toString());
+    if (this.showDelete){
+      this.notify.emit(this.salary.id.toString());
+    }
   }
 }

@@ -10,6 +10,9 @@ import { SalaryService } from '../salary.service';
 export class SalaryListComponent implements OnInit {
   show: Boolean = false;
   default: Boolean = true;
+  isLoading: Boolean;
+  successMessage: String;
+  errorMessage: string;
   data: Salary;
   results: Salary[] = [];
   deletedRecords: Salary[];
@@ -30,20 +33,24 @@ export class SalaryListComponent implements OnInit {
   constructor(private salaryService: SalaryService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.salaryService.getSalaries().subscribe({
       next: salary => {
         this.filteredResults = salary;
         this.results = this.filteredResults;
+        this.isLoading = false;
       },
       error: err => {
         console.log(err);
+        this.errorMessage = err;
+        this.isLoading = false;
       }
     });
   }
   performSearch(value: string): Salary[] {
     value = value.toLowerCase();
-    return this.filteredResults.filter((salary: Salary) => salary.companyName.toLowerCase().includes(value)) 
-    && this.results.filter((salary: Salary) => salary.companyName.toLowerCase().includes(value));
+    return this.filteredResults.filter((salary: Salary) => salary.companyName.toLowerCase().includes(value) && salary.exactPeriod.includes(this.selectedFilter))
+    && this.results.filter((salary: Salary) => salary.companyName.toLowerCase().includes(value) && salary.exactPeriod.includes(this.selectedFilter));
   }
   performFilter(value: string): Salary[] {
     return this.filteredResults.filter((salary: Salary) => salary.exactPeriod.includes(value) && salary.companyName.toLocaleLowerCase().includes(this.listSearch)) 
@@ -52,61 +59,43 @@ export class SalaryListComponent implements OnInit {
   getFilteredSalary(): void {
     this.filteredResults = this.performFilter(this.selectedFilter);
   }
-  clearFilter() {
-    this.selectedFilter = '';
-  }
   showDetail(id: number): void {
     if (this.default) {
-      this.salaryService.getSalary(id).subscribe({
-        next: salary => {
+      this.filteredResults.forEach(salary => {
+        if (id === salary.id){
           this.show = !this.show;
-          this.salary.id = salary.id;
-          this.salary.companyName = salary.companyName;
-          this.salary.amount = salary.amount;
-          this.salary.currency = salary.currency;
-          this.salary.exactPeriod = salary.exactPeriod;
-          this.salary.taxDate = salary.taxDate;
-          this.salary.taxMonth = salary.taxMonth;
-          this.salary.taxYear = salary.taxYear;
-        },
-        error: err => {
-          console.log(err);
+          this.salary = salary;
         }
       });
-      
     }
     else if (!this.default) {
-      this.salaryService.getSalary(id).subscribe({
-        next: salary => {
+      this.results.forEach(salary => {
+        if(id === salary.id){
           this.show = !this.show;
-          this.salary.id = salary.id;
-          this.salary.companyName = salary.companyName;
-          this.salary.amount = salary.amount;
-          this.salary.currency = salary.currency;
-          this.salary.exactPeriod = salary.exactPeriod;
-          this.salary.taxDate = salary.taxDate;
-          this.salary.taxMonth = salary.taxMonth;
-          this.salary.taxYear = salary.taxYear;
-        },
-        error: err => {
-          console.log(err);
+          this.salary = salary;
         }
       });
-
     }
   }
   deleteRecord(value: string): void {
-    if (confirm('Are you sure you want to delete this record?')) {
+    this.isLoading = true;
       this.show = !this.show;
       this.default = false;
       for (let i: number = 0; i < this.results.length; i++) {
         if (this.results[i].id == parseInt(value)) {
           this.salaryService.deleteSalary(this.results[i].id).subscribe({
-            next: () => this.results.splice(i, 1),
-            error: err => console.log(err)
+            next: () => {
+              this.results.splice(i, 1);
+              this.successMessage = 'Record has been deleted';
+              this.isLoading = false;
+            },
+            error: err => {
+              console.log(err);
+              this.errorMessage = err;
+              this.isLoading = false;
+            }
           });
         }
       }
-    }
   }
 }

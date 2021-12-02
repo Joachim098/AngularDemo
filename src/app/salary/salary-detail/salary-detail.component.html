@@ -19,13 +19,20 @@
         <div class="row">
             <div calss="col"> Date: {{salary | datePipe}} </div>
         </div>
-        <div class="row mt-3">
-            <div class="col-3" (click)="deletedChild()">
+        <div class="row mt-3" *ngIf="showButtons">
+            <div class="col-3" (click)="confirmDelete()">
                 <button class="btn btn-danger"> Delete </button>
             </div>
             <div class="col-3">
                 <button class="btn btn-primary" [routerLink]="['/salary-record', salary.id]"> Edit </button>
             </div>
+        </div>
+        <br/>
+        <div class="alert alert-danger alert-dismissible fade show"  role="alert" *ngIf="showDelete">
+            Are you sure you want to delete this record?
+            <button type="button" class="btn-close mt-2" data-bs-dismiss="alert" aria-label="Cancel" label="Cancel" (click)="cancelDelete()"></button>
+            <hr/>
+            <button class="btn btn-danger" (click)="deletedChild()"> Delete </button>
         </div>
     </div>
 </div>

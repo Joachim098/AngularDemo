@@ -21,8 +21,10 @@ export class SalaryAddEditComponent implements OnInit {
   routerId: number = +this.router.snapshot.paramMap.get('id')!;
   editData: Salary;
   salary: Salary = new Salary();
-  //salaryData: Salary[] = this.salary.getTestData();
   show: Boolean = false;
+  isLoading: Boolean;
+  successMessage: String;
+  errorMessage: string;
 
   constructor(private fb: FormBuilder, private router: ActivatedRoute, private route: Router, private salaryService: SalaryService) {
     this.formData = new FormData();
@@ -49,7 +51,6 @@ export class SalaryAddEditComponent implements OnInit {
     }
   }
   getNumberOfDays(): void{
-    //alert(this.clientForm.get('year')!.value)
     this.clientForm.get('day')!.setValue('');
     this.numberOfDays = [];
     let num: number = 1;
@@ -172,11 +173,11 @@ export class SalaryAddEditComponent implements OnInit {
     }
   }
   getEditRecord(id: number): void{
+    this.isLoading = true;
     this.salaryService.getSalary(id).subscribe({
       next: salary => {
         this.editData = {...salary};
         if(this.editData.id > 0){
-
           this.btnLabel = 'Update Record';
           this.formLabel = 'EDIT SALARY RECORD';
           this.clientForm.get('company')!.setValue(this.editData.companyName);
@@ -200,8 +201,13 @@ export class SalaryAddEditComponent implements OnInit {
           this.btnLabel = 'Add New Record'
           this.formLabel = 'ADD SALARY RECORD';
         }
+        this.isLoading = false;
       },
-      error: err => console.log(err)
+      error: err => {
+        console.log(err);
+        this.errorMessage = err;
+        this.isLoading = false;
+      }
     });
   }
   addEditRecord(): void{
@@ -239,13 +245,17 @@ export class SalaryAddEditComponent implements OnInit {
         newData.taxDate.month = month;
         newData.taxDate.year = year;  
       }
+      this.isLoading = true;
       this.salaryService.updateSalary(newData).subscribe({
         next: () => {
-          this.clientForm.reset();
-          alert('Record has been updated!');
-          this.route.navigate(['/salary-list']);
+          this.successMessage = 'Record has been updated!';
+          this.isLoading = false;
         },
-        error: err => console.log(err)
+        error: err => {
+          console.log(err);
+          this.errorMessage = err;
+          this.isLoading = false;
+        }
       });
     } 
   }
@@ -283,13 +293,18 @@ export class SalaryAddEditComponent implements OnInit {
         record.taxDate.month = month;
         record.taxDate.year = year;  
       }
+      this.isLoading = true;
       this.salaryService.createSalary(record).subscribe({
         next: () => {
           this.clientForm.reset();
-          alert('New Record has been added!');
-          this.route.navigate(['/salary-list']);
+          this.successMessage = 'New Record has been added!';
+          this.isLoading = false;
         },
-        error: err => console.log(err)
+        error: err => {
+          console.log(err);
+          this.errorMessage = err;
+          this.isLoading = false;
+        }
       });
     }
   }
